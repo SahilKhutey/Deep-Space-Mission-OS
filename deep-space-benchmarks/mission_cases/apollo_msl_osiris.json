@@ -1,0 +1,13 @@
+{
+  "apollo_11": {
+    "mission_duration_days": 8.1,
+    "total_delta_v_km_s": 15.5
+  },
+  "msl": {
+    "transfer_time_days": 253.0,
+    "arrival_velocity_km_s": 5.6
+  },
+  "osiris_rex": {
+    "rendezvous_accuracy_m": 0.05
+  }
+}

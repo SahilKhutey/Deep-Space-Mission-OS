@@ -1,0 +1,17 @@
+{
+  "RL-10": {
+    "type": "Chemical",
+    "Isp": 450.0,
+    "thrust": 110000.0
+  },
+  "Raptor": {
+    "type": "Chemical",
+    "Isp": 380.0,
+    "thrust": 2200000.0
+  },
+  "Merlin": {
+    "type": "Chemical",
+    "Isp": 311.0,
+    "thrust": 981000.0
+  }
+}

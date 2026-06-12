@@ -1,0 +1,11 @@
+"""
+SI base units. Used for dimensional analysis.
+"""
+KG = "kg"
+M  = "m"
+S  = "s"
+J  = "J"
+W  = "W"
+N  = "N"
+PA = "Pa"
+K  = "K"

@@ -1,0 +1,14 @@
+{
+  "iss": {
+    "name": "International Space Station",
+    "altitude_km": 408.0,
+    "inclination_deg": 51.64,
+    "velocity_km_s": 7.66
+  },
+  "geo": {
+    "name": "Geostationary Earth Orbit",
+    "altitude_km": 35786.0,
+    "inclination_deg": 0.0,
+    "velocity_km_s": 3.07
+  }
+}

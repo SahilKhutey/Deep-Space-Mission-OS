@@ -1,0 +1,58 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv/
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Testing
+.pytest_cache/
+.benchmarks/
+.coverage
+coverage.xml
+htmlcov/
+*.log
+
+# IDEs & editors
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+*.env
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Output files
+simulations/outputs/*.png
+simulations/outputs/*.json
+simulations/outputs/*.csv
+outputs/
+
+# Node (if any tooling is added)
+node_modules/
+npm-debug.log*
+
+# Distribution / packaging
+*.manifest
+*.spec
+
+# Windows
+ehthumbs.db
+Desktop.ini

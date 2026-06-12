@@ -1,0 +1,9 @@
+{
+  "version": "1.0.0",
+  "name": "de421_planetary_constants",
+  "source": "NASA/JPL DE421 Ephemerides",
+  "license": "CC0-1.0",
+  "contents": [
+    "ephemeris/de421_catalog.json"
+  ]
+}

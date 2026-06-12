@@ -1,0 +1,10 @@
+{
+  "nominal_solar_panel_1au": {
+    "distance_au": 1.0,
+    "solar_output_w": 4083.0
+  },
+  "steady_state_radiator_eq": {
+    "heat_input_w": 500.0,
+    "temp_k": 313.25
+  }
+}
