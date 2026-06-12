@@ -10,5 +10,23 @@
     "altitude_km": 35786.0,
     "inclination_deg": 0.0,
     "velocity_km_s": 3.07
+  },
+  "gps": {
+    "name": "GPS Navigation Orbit (MEO)",
+    "altitude_km": 20180.0,
+    "inclination_deg": 55.0,
+    "velocity_km_s": 3.87
+  },
+  "hubble": {
+    "name": "Hubble Space Telescope (LEO)",
+    "altitude_km": 540.0,
+    "inclination_deg": 28.5,
+    "velocity_km_s": 7.59
+  },
+  "lageos": {
+    "name": "LAGEOS Geodetic Orbit (HEO)",
+    "altitude_km": 5900.0,
+    "inclination_deg": 109.8,
+    "velocity_km_s": 5.71
   }
 }

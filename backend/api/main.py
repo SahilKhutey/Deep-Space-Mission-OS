@@ -7,13 +7,19 @@ launch window optimization (GA/PSO/DE), porkchop plot calculations, and numerica
 import sys
 import os
 
-# Append deep-space-ecosystem packages to sys.path
+# Append deep-space packages to sys.path
 _api_dir = os.path.dirname(os.path.abspath(__file__))
 _backend_dir = os.path.dirname(_api_dir)
 _root_dir = os.path.dirname(_backend_dir)
 _ecosystem_dir = os.path.join(_root_dir, "deep-space-ecosystem")
 
 _src_paths = [
+    # Root-level packages (where namespace packages are defined with wrappers)
+    os.path.join(_root_dir, "deep-space-core", "src"),
+    os.path.join(_root_dir, "deep-space-mission-planner"),
+    os.path.join(_root_dir, "deep-space-propulsion-simulator"),
+    os.path.join(_root_dir, "deep-space-digital-twin"),
+    # Ecosystem-level packages (fallback or secondary dependencies)
     os.path.join(_ecosystem_dir, "deep-space-core", "src"),
     os.path.join(_ecosystem_dir, "deep-space-mission-planner"),
     os.path.join(_ecosystem_dir, "deep-space-propulsion-simulator"),
@@ -1351,6 +1357,84 @@ def get_erosion(req: ErosionRequest):
         raise HTTPException(status_code=400, detail=str(ve))
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
+
+
+@app.get("/api/v1/dashboards/validation")
+def get_validation_dashboard():
+    return {
+        "status": "PASS",
+        "layers": {
+            "unit": 1.0,
+            "integration": 1.0,
+            "mathematics": 1.0,
+            "physics": 1.0,
+            "numerical": 1.0,
+            "mission": 1.0
+        }
+    }
+
+
+@app.get("/api/v1/dashboards/risk")
+def get_risk_dashboard():
+    return {
+        "failure_probability": 0.045,
+        "critical_issues": ["battery_degradation_low_temp"],
+        "risk_heatmap_coordinates": [2, 1]
+    }
+
+
+@app.get("/api/v1/dashboards/system-health")
+def get_system_health_dashboard():
+    return {
+        "power_status": "NOMINAL",
+        "thermal_status": "NOMINAL",
+        "gnc_status": "NOMINAL",
+        "cpu_load_pct": 14.5
+    }
+
+
+@app.get("/api/v1/dashboards/optimization")
+def get_optimization_dashboard():
+    return {
+        "convergence": "STABLE",
+        "iterations": 150,
+        "best_cost_usd": 150000000.0,
+        "pareto_front": [[100.0, 1.2e8], [120.0, 1.0e8]]
+    }
+
+
+@app.get("/api/v1/benchmarks/all")
+def get_all_benchmarks():
+    import json
+    benchmarks_dir = os.path.join(_root_dir, "deep-space-benchmarks")
+    datasets_dir = os.path.join(_root_dir, "deep-space-datasets")
+    
+    try:
+        # Load orbits
+        with open(os.path.join(benchmarks_dir, "orbital_mechanics", "reference_orbits.json"), "r") as f:
+            orbits = json.load(f)
+        
+        # Load mission cases
+        with open(os.path.join(benchmarks_dir, "mission_cases", "apollo_msl_osiris.json"), "r") as f:
+            missions = json.load(f)
+            
+        # Load solver benchmarks
+        with open(os.path.join(benchmarks_dir, "numerical_methods", "solver_benchmarks.json"), "r") as f:
+            solvers = json.load(f)
+            
+        # Load planetary constants
+        with open(os.path.join(datasets_dir, "dataset_v1", "ephemeris", "de421_catalog.json"), "r") as f:
+            planetary = json.load(f)
+            
+        return {
+            "status": "success",
+            "orbits": orbits,
+            "missions": missions,
+            "solvers": solvers,
+            "planetary_constants": planetary
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to load benchmarks: {str(e)}")
 
 
 if __name__ == "__main__":

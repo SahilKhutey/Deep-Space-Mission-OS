@@ -11,591 +11,869 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Plotly.js -->
     <script src="https://cdn.plot.ly/plotly-2.26.0.min.js"></script>
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/style.css?v=2.1">
 </head>
 <body>
     <div class="app-container">
-        <!-- Header -->
-        <header class="app-header">
-            <div class="logo-area">
+        <!-- Top Navigation Bar -->
+        <header class="top-nav">
+            <div class="nav-brand">
                 <span class="logo-icon">🚀</span>
                 <div>
-                    <h1>Deep Space Mission OS</h1>
-                    <p class="subtitle">Aerospace Engineering & Trajectory Design Platform</p>
+                    <h2>Deep Space OS</h2>
+                    <span class="brand-status">Nominal</span>
                 </div>
             </div>
-            <div class="system-status">
+            
+            <nav class="nav-menu">
+                <a href="#mission-planner" class="nav-item active" id="nav-mission-planner">Mission Planner</a>
+                <a href="#launch-optimizer" class="nav-item" id="nav-launch-optimizer">Launch Optimizer</a>
+                <a href="#orbit-tweaker" class="nav-item" id="nav-orbit-tweaker">Orbit Tweaker</a>
+                <a href="#monte-carlo" class="nav-item" id="nav-monte-carlo">Monte Carlo</a>
+                <a href="#systems-twin" class="nav-item" id="nav-systems-twin">Systems Twin</a>
+                <a href="#scenario-library" class="nav-item" id="nav-scenario-library">Scenario Library</a>
+                <a href="#validation-credibility" class="nav-item" id="nav-validation-credibility">Validation Console</a>
+            </nav>
+            
+            <div class="nav-status">
+                <span class="system-version">v1.0.2</span>
                 <div class="status-indicator nominal"></div>
-                <span>Ecosystem: Nominal</span>
+                <span class="status-text">Connected</span>
             </div>
         </header>
 
-        <!-- Main Layout Grid -->
-        <main class="dashboard-grid">
-            
-            <!-- Left Sidebar: Controls & Inputs -->
-            <section class="control-panel glass-card">
-                <h2 class="section-title">Mission Parameters</h2>
-                <form id="mission-form" onsubmit="event.preventDefault();">
-                    <div class="input-group">
-                        <label for="destination">Destination</label>
-                        <select id="destination" required>
-                            <option value="moon">Moon (Geocentric / Lunar Transfer)</option>
-                            <option value="mars" selected>Mars (Heliocentric Orbit)</option>
-                            <option value="bennu">Asteroid Bennu (Rendezvous)</option>
-                            <option value="psyche">Asteroid Psyche (Deep Space)</option>
-                        </select>
-                    </div>
-
-                    <div class="input-row">
-                        <div class="input-group">
-                            <label for="propulsion_type">Propulsion</label>
-                            <select id="propulsion_type" required>
-                                <option value="Chemical">Chemical (Isp ~320s)</option>
-                                <option value="Electric">Electric (Isp ~2000s)</option>
-                                <option value="Nuclear">Nuclear (Isp ~900s)</option>
-                            </select>
-                        </div>
-                        <div class="input-group">
-                            <label for="isp">Custom Isp (s)</label>
-                            <input type="number" id="isp" value="320" min="50" max="5000" required>
-                        </div>
-                    </div>
-
-                    <div class="input-row">
-                        <div class="input-group">
-                            <label for="spacecraft_mass">Wet Mass (kg)</label>
-                            <input type="number" id="spacecraft_mass" value="2500" min="10" required>
-                        </div>
-                        <div class="input-group">
-                            <label for="payload_mass">Payload (kg)</label>
-                            <input type="number" id="payload_mass" value="800" min="1" required>
-                        </div>
-                    </div>
-
-                    <div class="input-row">
-                        <div class="input-group">
-                            <label for="launch_date">Launch Date</label>
-                            <input type="date" id="launch_date" value="2032-08-15" required>
-                        </div>
-                        <div class="input-group">
-                            <label for="flight_days">Flight Duration (days)</label>
-                            <input type="number" id="flight_days" value="258" min="1" required>
-                        </div>
-                    </div>
-
-                    <div class="actions">
-                        <button type="button" id="btn-run-simulation" class="btn btn-primary" onclick="runSimulation()">
-                            <span class="icon">🔄</span> Run Simulation
-                        </button>
-                        <button type="button" id="btn-plan-mission" class="btn btn-secondary" onclick="planMission()">
-                            <span class="icon">📋</span> Plan Mission & Costs
-                        </button>
-                    </div>
-                </form>
-
-                <hr class="separator">
-
-                <h2 class="section-title">Launch Window Search (Porkchop)</h2>
-                <form id="porkchop-form" onsubmit="event.preventDefault();">
-                    <div class="input-row">
-                        <div class="input-group">
-                            <label for="porkchop_start_dep">Start Departure</label>
-                            <input type="date" id="porkchop_start_dep" value="2032-08-01" required>
-                        </div>
-                        <div class="input-group">
-                            <label for="porkchop_end_dep">End Departure</label>
-                            <input type="date" id="porkchop_end_dep" value="2032-08-20" required>
-                        </div>
-                    </div>
-
-                    <div class="input-row">
-                        <div class="input-group">
-                            <label for="porkchop_start_arr">Start Arrival</label>
-                            <input type="date" id="porkchop_start_arr" value="2033-02-01" required>
-                        </div>
-                        <div class="input-group">
-                            <label for="porkchop_end_arr">End Arrival</label>
-                            <input type="date" id="porkchop_end_arr" value="2033-02-20" required>
-                        </div>
-                    </div>
-
-                    <div class="input-group">
-                        <label for="porkchop_steps">Resolution (Grid Steps)</label>
-                        <input type="number" id="porkchop_steps" value="15" min="5" max="40" required>
-                    </div>
-
-                    <button type="button" id="btn-generate-porkchop" class="btn btn-accent" onclick="generatePorkchop()">
-                        <span class="icon">📊</span> Generate Porkchop Grid
-                    </button>
-                </form>
-
-                <hr class="separator">
-
-                <h2 class="section-title">Trajectory Optimization (GA)</h2>
-                <div class="actions-stack">
-                    <button type="button" id="btn-optimize" class="btn btn-secondary" onclick="runOptimization()">
-                        <span class="icon">🧬</span> Run Genetic Algorithm
-                    </button>
+        <!-- Main Content Viewport -->
+        <main class="main-content">
+            <!-- Header (Dynamic Title based on page) -->
+            <header class="app-header">
+                <div class="header-title">
+                    <h1 id="page-title">Mission Planner</h1>
+                    <p class="subtitle" id="page-subtitle">Core trajectory design and mission planning parameters</p>
                 </div>
+                <div class="system-status">
+                    <div class="status-indicator nominal"></div>
+                    <span>Telemetry: Nominal</span>
+                </div>
+            </header>
 
-                <hr class="separator">
-
-                <h2 class="section-title">Interactive Orbit Tweaker</h2>
-                <form id="tweaker-form" onsubmit="event.preventDefault();">
-                    <div class="input-group">
-                        <label for="tweaker_body">Reference Body</label>
-                        <select id="tweaker_body" onchange="onTweakerParamsChange()" required>
-                            <option value="earth" selected>Earth (mu = 3.986e5 km³/s²)</option>
-                            <option value="moon">Moon (mu = 4.905e3 km³/s²)</option>
-                            <option value="mars">Mars (mu = 4.283e4 km³/s²)</option>
-                            <option value="sun">Sun (mu = 1.327e11 km³/s²)</option>
-                        </select>
-                    </div>
-
-                    <div class="input-group">
-                        <label for="tweaker_a">Semi-major axis (a): <span id="val_tweaker_a">12000</span> km</label>
-                        <input type="range" id="tweaker_a" min="6500" max="60000" step="500" value="12000" oninput="onTweakerParamsChange()">
-                    </div>
-
-                    <div class="input-group">
-                        <label for="tweaker_e">Eccentricity (e): <span id="val_tweaker_e">0.10</span></label>
-                        <input type="range" id="tweaker_e" min="0.0" max="0.9" step="0.01" value="0.10" oninput="onTweakerParamsChange()">
-                    </div>
-
-                    <div class="input-group">
-                        <label for="tweaker_i">Inclination (i): <span id="val_tweaker_i">28.5</span>°</label>
-                        <input type="range" id="tweaker_i" min="0" max="90" step="0.5" value="28.5" oninput="onTweakerParamsChange()">
-                        <button type="button" id="btn-solve-sunsync" class="btn btn-secondary" onclick="solveSunSyncInclination()" style="padding: 6px 10px; font-size: 11px; margin-top: 6px; width: 100%; border-radius: 6px; height: auto;">☀️ Solve Sun-Sync Inclination</button>
-                    </div>
-                    <div class="input-group">
-                        <label for="tweaker_raan">Ascending Node (Ω): <span id="val_tweaker_raan">0.0</span>°</label>
-                        <input type="range" id="tweaker_raan" min="0" max="360" step="1.0" value="0.0" oninput="onTweakerParamsChange()">
-                    </div>
-                    <div class="input-group" id="sunsync_raan_group" style="margin-top: 10px; border: 1px solid rgba(255,255,255,0.06); padding: 10px; border-radius: 8px; background: rgba(0,0,0,0.2);">
-                        <label style="font-size: 9px; font-weight: 600; color: var(--secondary-color);">Launch Date Plane Match</label>
-                        <div class="input-row" style="margin-top: 6px;">
-                            <div class="input-group" style="margin-bottom: 0;">
-                                <label for="tweaker_launch_date" style="font-size: 8px;">Date</label>
-                                <input type="date" id="tweaker_launch_date" value="2032-08-15" onchange="onTweakerParamsChange()" style="font-size: 11px; padding: 6px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.08);">
-                            </div>
-                            <div class="input-group" style="margin-bottom: 0;">
-                                <label for="tweaker_ltan" style="font-size: 8px;">LTAN Node</label>
-                                <select id="tweaker_ltan" onchange="onTweakerParamsChange()" style="font-size: 11px; padding: 6px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.08);">
-                                    <option value="12.0" selected>Noon (12:00)</option>
-                                    <option value="6.0">6 AM (Dawn)</option>
-                                    <option value="18.0">6 PM (Dusk)</option>
-                                    <option value="0.0">Midnight</option>
+            <!-- Page 1: Mission Planner -->
+            <div id="page-mission-planner" class="tab-page active">
+                <div class="dashboard-grid">
+                    <!-- Left Sidebar Controls -->
+                    <section class="control-panel glass-card">
+                        <h2 class="section-title">Mission Parameters</h2>
+                        <form id="mission-form" onsubmit="event.preventDefault();">
+                            <div class="input-group">
+                                <label for="destination">Destination</label>
+                                <select id="destination" required>
+                                    <option value="moon">Moon (Geocentric / Lunar Transfer)</option>
+                                    <option value="mars" selected>Mars (Heliocentric Orbit)</option>
+                                    <option value="bennu">Asteroid Bennu (Rendezvous)</option>
+                                    <option value="psyche">Asteroid Psyche (Deep Space)</option>
                                 </select>
                             </div>
-                        </div>
-                        <button type="button" id="btn-optimize-sunsync-raan" class="btn btn-accent" onclick="optimizeSunSyncRAAN()" style="padding: 6px 10px; font-size: 11px; margin-top: 8px; border-radius: 6px; height: auto;">🧬 Optimize Sun-Sync Plane (RAAN)</button>
-                    </div>
-                    <div class="input-group checkbox-group" style="flex-direction: row; align-items: center; gap: 8px; margin-top: 10px;">
-                        <input type="checkbox" id="tweaker_j2" onchange="onTweakerParamsChange()" style="width: auto; height: auto; cursor: pointer; margin: 0;">
-                        <label for="tweaker_j2" style="cursor: pointer; margin-bottom: 0; user-select: none;">Enable J2 Perturbation</label>
-                    </div>
-                    <div class="input-group checkbox-group" style="flex-direction: row; align-items: center; gap: 8px; margin-top: 10px;">
-                        <input type="checkbox" id="tweaker_nbody" onchange="toggleNBodyControls()" style="width: auto; height: auto; cursor: pointer; margin: 0;">
-                        <label for="tweaker_nbody" style="cursor: pointer; margin-bottom: 0; user-select: none;">Enable N-Body Propagation</label>
-                    </div>
-                    <div class="input-group" id="nbody_duration_group" style="display: none; margin-top: 10px;">
-                        <label for="tweaker_duration">Propagation Duration: <span id="val_tweaker_duration">15</span> days</label>
-                        <input type="range" id="tweaker_duration" min="5" max="90" step="5" value="15" oninput="onTweakerParamsChange()">
-                    </div>
-                    
-                    <hr class="separator" style="margin-top: 16px;">
-                    <h2 class="section-title">Active Station Keeping</h2>
-                    <div class="input-group" style="margin-top: 10px;">
-                        <label for="tweaker_dv_burn">Apoapsis Burn ΔV: <span id="val_tweaker_dv_burn">50</span> m/s</label>
-                        <input type="range" id="tweaker_dv_burn" min="10" max="800" step="10" value="50" oninput="onStationKeepingChange()">
-                    </div>
-                    <button type="button" id="btn-execute-sk-burn" class="btn btn-primary" onclick="executeStationKeepingBurn()" style="padding: 10px; font-size: 12px; border-radius: 8px;">🚀 Execute SK Burn (Raise Periapsis)</button>
-                    
-                    <div id="sk-results-panel" style="display: none; margin-top: 12px; border: 1px solid rgba(255,255,255,0.08); padding: 12px; border-radius: 8px; background: rgba(0,0,0,0.3); flex-direction: column; gap: 4px;">
-                        <span style="font-size: 9px; text-transform: uppercase; color: var(--text-secondary); font-weight: 500; letter-spacing: 0.5px;">Burn Simulation Results</span>
-                        <p style="font-size: 11px; margin-top: 4px;">Post-Burn Periapsis: <strong id="sk-new-alt" style="color: var(--accent-color);">-- km</strong></p>
-                        <p style="font-size: 11px;">Propellant Mass Required: <strong id="sk-fuel-mass" style="color: var(--primary-color);">-- kg</strong></p>
-                        <div id="sk-fuel-warning" style="display: none; border-radius: 6px; padding: 8px; background: rgba(239, 68, 68, 0.15); border: 1px solid var(--danger-color); color: var(--danger-color); font-weight: 600; font-size: 10px; text-align: center; width: 100%; margin-top: 6px; box-shadow: 0 0 10px rgba(239, 68, 68, 0.2);">
-                            ⚠️ CRITICAL: PROPELLANT DEPLETED
-                        </div>
-                    </div>
-                    
-                    <hr class="separator" style="margin-top: 16px;">
-                    <h2 class="section-title">Orbital Transfers (Circular)</h2>
-                    <div class="input-group" style="margin-top: 10px;">
-                        <label for="transfer_type">Transfer Strategy</label>
-                        <select id="transfer_type" onchange="toggleTransferControls()" style="font-size: 11px; padding: 6px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.08); width: 100%; border-radius: 6px; color: var(--text-color);">
-                            <option value="hohmann" selected>Hohmann (2-Impulse)</option>
-                            <option value="bielliptic">Bi-elliptic (3-Impulse)</option>
-                            <option value="lowthrust">Low-Thrust Spiral</option>
-                        </select>
-                    </div>
-                    <div class="input-group" style="margin-top: 10px;">
-                        <label for="transfer_target_r">Target Radius (r₂): <span id="val_transfer_target_r">25000</span> km</label>
-                        <input type="range" id="transfer_target_r" min="6500" max="60000" step="500" value="25000" oninput="onTransferParamsChange()">
-                    </div>
-                    <div class="input-group" id="transfer_boost_r_group" style="display: none; margin-top: 10px;">
-                        <label for="transfer_boost_r">Boost Apoapsis (r_b): <span id="val_transfer_boost_r">80000</span> km</label>
-                        <input type="range" id="transfer_boost_r" min="30000" max="150000" step="1000" value="80000" oninput="onTransferParamsChange()">
-                    </div>
-                    <div class="input-group" id="transfer_thrust_group" style="display: none; margin-top: 10px;">
-                        <label for="transfer_thrust">Thruster Thrust (T): <span id="val_transfer_thrust">0.50</span> N</label>
-                        <input type="range" id="transfer_thrust" min="0.01" max="5.00" step="0.01" value="0.50" oninput="onTransferParamsChange()">
-                    </div>
-                    <button type="button" id="btn-compute-transfer" class="btn btn-accent" onclick="executeTransferSolver()" style="padding: 10px; font-size: 12px; border-radius: 8px; width: 100%; margin-top: 8px;">📊 Compute Transfer Trajectory</button>
-                    
-                    <div id="transfer-results-panel" style="display: none; margin-top: 12px; border: 1px solid rgba(255,255,255,0.08); padding: 12px; border-radius: 8px; background: rgba(0,0,0,0.3); flex-direction: column; gap: 4px;">
-                        <span style="font-size: 9px; text-transform: uppercase; color: var(--text-secondary); font-weight: 500; letter-spacing: 0.5px;">Transfer Solution Details</span>
-                        <div id="transfer-impulsive-details">
-                            <p style="font-size: 11px; margin-top: 4px;">Departure Burn ΔV₁: <strong id="tr-dv1" style="color: var(--primary-color);">-- km/s</strong></p>
-                            <p style="font-size: 11px;" id="tr-dv2-row">Apoapsis Burn ΔV₂: <strong id="tr-dv2" style="color: var(--primary-color);">-- km/s</strong></p>
-                            <p style="font-size: 11px;" id="tr-dv3-row" style="display: none;">Arrival Burn ΔV₃: <strong id="tr-dv3" style="color: var(--primary-color);">-- km/s</strong></p>
-                        </div>
-                        <div id="transfer-lowthrust-details" style="display: none;">
-                            <p style="font-size: 11px; margin-top: 4px;">Propellant Consumed: <strong id="tr-prop-mass" style="color: var(--primary-color);">-- kg</strong></p>
-                            <p style="font-size: 11px;">Final Dry Mass: <strong id="tr-final-mass" style="color: var(--primary-color);">-- kg</strong></p>
-                        </div>
-                        <p style="font-size: 11px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 4px; margin-top: 4px;">Total ΔV Budget: <strong id="tr-total-dv" style="color: var(--accent-color);">-- km/s</strong></p>
-                        <p style="font-size: 11px;">Time of Flight: <strong id="tr-tof" style="color: var(--accent-color);">-- days</strong></p>
-                    </div>
-                </form>
 
-                <hr class="separator" style="margin-top: 16px;">
-                <h2 class="section-title">Monte Carlo Uncertainty</h2>
-                <form id="mc-form" onsubmit="event.preventDefault();" style="display: flex; flex-direction: column; gap: 4px;">
-                    <div class="input-group" style="margin-top: 10px;">
-                        <label for="mc_runs">Monte Carlo Runs: <span id="val_mc_runs">30</span></label>
-                        <input type="range" id="mc_runs" min="10" max="100" step="10" value="30" oninput="onMonteCarloParamsChange()">
-                    </div>
-                    <div class="input-group" style="margin-top: 10px;">
-                        <label for="mc_pos_std">Initial Position 1σ Error: <span id="val_mc_pos_std">10</span> km</label>
-                        <input type="range" id="mc_pos_std" min="1" max="100" step="1" value="10" oninput="onMonteCarloParamsChange()">
-                    </div>
-                    <div class="input-group" style="margin-top: 10px;">
-                        <label for="mc_vel_std">Initial Velocity 1σ Error: <span id="val_mc_vel_std">0.5</span> m/s</label>
-                        <input type="range" id="mc_vel_std" min="0.1" max="10.0" step="0.1" value="0.5" oninput="onMonteCarloParamsChange()">
-                    </div>
-                    <div class="input-group" style="margin-top: 10px;">
-                        <label for="mc_duration">Propagation Duration: <span id="val_mc_duration">5</span> days</label>
-                        <input type="range" id="mc_duration" min="1" max="30" step="1" value="5" oninput="onMonteCarloParamsChange()">
-                    </div>
-                    <button type="button" id="btn-run-mc" class="btn btn-accent" onclick="executeMonteCarlo()" style="padding: 10px; font-size: 12px; border-radius: 8px; width: 100%; margin-top: 8px;">🎲 Run Monte Carlo Dispersion</button>
-                </form>
-            </section>
-
-            <!-- Center/Right Content Area -->
-            <div class="content-area">
-                
-                <!-- Row 1: 3D Visualization -->
-                <section class="simulation-section glass-card">
-                    <div class="card-header">
-                        <h2>3D Trajectory Visualization</h2>
-                        <div class="playback-controls" id="playback-panel" style="display: none;">
-                            <button class="btn-icon" id="btn-play-pause" onclick="togglePlayback()">▶</button>
-                            <input type="range" id="time-slider" min="0" max="100" value="0" oninput="setPlaybackStep(this.value)">
-                            <span id="playback-time">Step: 0/0</span>
-                        </div>
-                    </div>
-                    <div id="plot-3d" class="chart-container">
-                        <div class="chart-placeholder">
-                            <p>Configure parameters and click <strong>Run Simulation</strong> to render orbital paths.</p>
-                        </div>
-                    </div>
-                    <!-- Live Orbit Telemetry HUD -->
-                    <div class="hud-panel" id="orbit-hud">
-                        <div class="hud-metric">
-                            <span class="hud-label">Periapsis Velocity</span>
-                            <span class="hud-value" id="hud-v-peri">-- km/s</span>
-                        </div>
-                        <div class="hud-metric">
-                            <span class="hud-label">Apoapsis Velocity</span>
-                            <span class="hud-value" id="hud-v-apo">-- km/s</span>
-                        </div>
-                        <div class="hud-metric">
-                            <span class="hud-label">Periapsis Altitude</span>
-                            <span class="hud-value" id="hud-alt-peri">-- km</span>
-                        </div>
-                        <div class="hud-metric">
-                            <span class="hud-label">Apoapsis Altitude</span>
-                            <span class="hud-value" id="hud-alt-apo">-- km</span>
-                        </div>
-                        <div class="hud-metric">
-                            <span class="hud-label">Orbital Period</span>
-                            <span class="hud-value" id="hud-period">-- hrs</span>
-                        </div>
-                        <div class="hud-metric j2-only" style="display: none;">
-                            <span class="hud-label">Nodal Precession (Ω̇)</span>
-                            <span class="hud-value" id="hud-j2-node">--°/day</span>
-                        </div>
-                        <div class="hud-metric j2-only" style="display: none;">
-                            <span class="hud-label">Apsidal Rotation (ω̇)</span>
-                            <span class="hud-value" id="hud-j2-apsidal">--°/day</span>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Row 2: Dual Plot Display -->
-                <div class="visuals-row">
-                    <section class="porkchop-section glass-card">
-                        <h2>Interplanetary Porkchop Contour Plot (C3)</h2>
-                        <div id="plot-porkchop" class="chart-container">
-                            <div class="chart-placeholder">
-                                <p>Click <strong>Generate Porkchop Grid</strong> to visualize optimal energy windows.</p>
+                            <div class="input-row">
+                                <div class="input-group">
+                                    <label for="propulsion_type">Propulsion</label>
+                                    <select id="propulsion_type" required>
+                                        <option value="Chemical">Chemical (Isp ~320s)</option>
+                                        <option value="Electric">Electric (Isp ~2000s)</option>
+                                        <option value="Nuclear">Nuclear (Isp ~900s)</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label for="isp">Custom Isp (s)</label>
+                                    <input type="number" id="isp" value="320" min="50" max="5000" required>
+                                </div>
                             </div>
+
+                            <div class="input-row">
+                                <div class="input-group">
+                                    <label for="spacecraft_mass">Wet Mass (kg)</label>
+                                    <input type="number" id="spacecraft_mass" value="2500" min="10" required>
+                                </div>
+                                <div class="input-group">
+                                    <label for="payload_mass">Payload (kg)</label>
+                                    <input type="number" id="payload_mass" value="800" min="1" required>
+                                </div>
+                            </div>
+
+                            <div class="input-row">
+                                <div class="input-group">
+                                    <label for="launch_date">Launch Date</label>
+                                    <input type="date" id="launch_date" value="2032-08-15" required>
+                                </div>
+                                <div class="input-group">
+                                    <label for="flight_days">Flight Duration (days)</label>
+                                    <input type="number" id="flight_days" value="258" min="1" required>
+                                </div>
+                            </div>
+
+                            <div class="actions">
+                                <button type="button" id="btn-run-simulation" class="btn btn-primary" onclick="runSimulation()">
+                                    <span class="icon">🔄</span> Run Simulation
+                                </button>
+                                <button type="button" id="btn-plan-mission" class="btn btn-secondary" onclick="planMission()">
+                                    <span class="icon">📋</span> Plan Mission & Costs
+                                </button>
+                            </div>
+                        </form>
+                    </section>
+
+                    <!-- Right Content Area -->
+                    <div class="content-area">
+                        <!-- 3D Trajectory Visualization Placeholder -->
+                        <div id="sim-placeholder-1">
+                            <!-- Shared 3D Simulation Section -->
+                            <section id="shared-simulation-section" class="simulation-section glass-card">
+                                <div class="card-header">
+                                    <h2 id="sim-section-title">3D Trajectory Visualization</h2>
+                                    <div class="playback-controls" id="playback-panel" style="display: none;">
+                                        <button class="btn-icon" id="btn-play-pause" onclick="togglePlayback()">▶</button>
+                                        <input type="range" id="time-slider" min="0" max="100" value="0" oninput="setPlaybackStep(this.value)">
+                                        <span id="playback-time">Step: 0/0</span>
+                                    </div>
+                                </div>
+                                <div id="plot-3d" class="chart-container">
+                                    <div class="chart-placeholder">
+                                        <p>Configure parameters and click <strong>Run Simulation</strong> to render orbital paths.</p>
+                                    </div>
+                                </div>
+                                <!-- Live Orbit Telemetry HUD -->
+                                <div class="hud-panel" id="orbit-hud">
+                                    <div class="hud-metric">
+                                        <span class="hud-label">Periapsis Velocity</span>
+                                        <span class="hud-value" id="hud-v-peri">-- km/s</span>
+                                    </div>
+                                    <div class="hud-metric">
+                                        <span class="hud-label">Apoapsis Velocity</span>
+                                        <span class="hud-value" id="hud-v-apo">-- km/s</span>
+                                    </div>
+                                    <div class="hud-metric">
+                                        <span class="hud-label">Periapsis Altitude</span>
+                                        <span class="hud-value" id="hud-alt-peri">-- km</span>
+                                    </div>
+                                    <div class="hud-metric">
+                                        <span class="hud-label">Apoapsis Altitude</span>
+                                        <span class="hud-value" id="hud-alt-apo">-- km</span>
+                                    </div>
+                                    <div class="hud-metric">
+                                        <span class="hud-label">Orbital Period</span>
+                                        <span class="hud-value" id="hud-period">-- hrs</span>
+                                    </div>
+                                    <div class="hud-metric j2-only" style="display: none;">
+                                        <span class="hud-label">Nodal Precession (Ω̇)</span>
+                                        <span class="hud-value" id="hud-j2-node">--°/day</span>
+                                    </div>
+                                    <div class="hud-metric j2-only" style="display: none;">
+                                        <span class="hud-label">Apsidal Rotation (ω̇)</span>
+                                        <span class="hud-value" id="hud-j2-apsidal">--°/day</span>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+
+                        <!-- Telemetry Metrics Row -->
+                        <section class="metrics-section">
+                            <div class="metric-card glass-card" id="metric-feasibility">
+                                <h3>Feasibility Check</h3>
+                                <div class="metric-value">N/A</div>
+                                <div class="metric-desc">Checks planetary ranges and mass ratios</div>
+                            </div>
+                            <div class="metric-card glass-card" id="metric-deltav">
+                                <h3>Total ΔV Budget</h3>
+                                <div class="metric-value">N/A</div>
+                                <div class="metric-desc">Cumulative burn velocity budget</div>
+                            </div>
+                            <div class="metric-card glass-card" id="metric-propellant">
+                                <h3>Propellant Fraction</h3>
+                                <div class="metric-value">N/A</div>
+                                <div class="metric-desc">Ratio of fuel mass to wet mass</div>
+                            </div>
+                            <div class="metric-card glass-card" id="metric-risk">
+                                <h3>Mission Risk Index</h3>
+                                <div class="metric-value">N/A</div>
+                                <div class="metric-desc">Statistical safety score (0 - 100)</div>
+                            </div>
+                        </section>
+
+                        <!-- Event Timeline -->
+                        <section class="timeline-section glass-card" id="timeline-card" style="display: none;">
+                            <h2>Mission Timeline & Event Schedule</h2>
+                            <div class="timeline-container">
+                                <table class="timeline-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Event Milestone</th>
+                                            <th>Burn ΔV (m/s)</th>
+                                            <th>Start Mass (kg)</th>
+                                            <th>End Mass (kg)</th>
+                                            <th>Fuel Consumed (kg)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="timeline-body">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page 2: Launch Optimizer -->
+            <div id="page-launch-optimizer" class="tab-page">
+                <div class="dashboard-grid">
+                    <!-- Left Sidebar Controls -->
+                    <section class="control-panel glass-card">
+                        <h2 class="section-title">Launch Window Search (Porkchop)</h2>
+                        <form id="porkchop-form" onsubmit="event.preventDefault();">
+                            <div class="input-row">
+                                <div class="input-group">
+                                    <label for="porkchop_start_dep">Start Departure</label>
+                                    <input type="date" id="porkchop_start_dep" value="2032-08-01" required>
+                                </div>
+                                <div class="input-group">
+                                    <label for="porkchop_end_dep">End Departure</label>
+                                    <input type="date" id="porkchop_end_dep" value="2032-08-20" required>
+                                </div>
+                            </div>
+
+                            <div class="input-row">
+                                <div class="input-group">
+                                    <label for="porkchop_start_arr">Start Arrival</label>
+                                    <input type="date" id="porkchop_start_arr" value="2033-02-01" required>
+                                </div>
+                                <div class="input-group">
+                                    <label for="porkchop_end_arr">End Arrival</label>
+                                    <input type="date" id="porkchop_end_arr" value="2033-02-20" required>
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <label for="porkchop_steps">Resolution (Grid Steps)</label>
+                                <input type="number" id="porkchop_steps" value="15" min="5" max="40" required>
+                            </div>
+
+                            <button type="button" id="btn-generate-porkchop" class="btn btn-accent" onclick="generatePorkchop()">
+                                <span class="icon">📊</span> Generate Porkchop Grid
+                            </button>
+                        </form>
+
+                        <hr class="separator">
+
+                        <h2 class="section-title">Trajectory Optimization (GA)</h2>
+                        <p style="font-size: 11px; margin-bottom: 12px; color: var(--text-secondary);">Finds the minimum launch & arrival delta-V configuration using a genetic algorithm solver.</p>
+                        <div class="actions-stack">
+                            <button type="button" id="btn-optimize" class="btn btn-secondary" onclick="runOptimization()">
+                                <span class="icon">🧬</span> Run Genetic Algorithm
+                            </button>
                         </div>
                     </section>
 
-                    <section class="optimization-section glass-card">
-                        <h2>Optimizer Convergence & Multi-Stage Sizing</h2>
-                        <div id="plot-secondary" class="chart-container">
-                            <div class="chart-placeholder">
-                                <p>Execute GA Optimization or sizing runs to plot structural data.</p>
+                    <!-- Right Content Area -->
+                    <div class="content-area">
+                        <div class="visuals-row">
+                            <section class="porkchop-section glass-card">
+                                <h2>Interplanetary Porkchop Contour Plot (C3)</h2>
+                                <div id="plot-porkchop" class="chart-container">
+                                    <div class="chart-placeholder">
+                                        <p>Click <strong>Generate Porkchop Grid</strong> to visualize optimal energy windows.</p>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section class="optimization-section glass-card">
+                                <h2>Optimizer Convergence & Multi-Stage Sizing</h2>
+                                <div id="plot-secondary" class="chart-container">
+                                    <div class="chart-placeholder">
+                                        <p>Execute GA Optimization or sizing runs to plot structural data.</p>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page 3: Orbit Tweaker -->
+            <div id="page-orbit-tweaker" class="tab-page">
+                <div class="dashboard-grid">
+                    <!-- Left Sidebar Controls -->
+                    <section class="control-panel glass-card">
+                        <h2 class="section-title">Interactive Orbit Tweaker</h2>
+                        <form id="tweaker-form" onsubmit="event.preventDefault();">
+                            <div class="input-group">
+                                <label for="tweaker_body">Reference Body</label>
+                                <select id="tweaker_body" onchange="onTweakerParamsChange()" required>
+                                    <option value="earth" selected>Earth (mu = 3.986e5 km³/s²)</option>
+                                    <option value="moon">Moon (mu = 4.905e3 km³/s²)</option>
+                                    <option value="mars">Mars (mu = 4.283e4 km³/s²)</option>
+                                    <option value="sun">Sun (mu = 1.327e11 km³/s²)</option>
+                                </select>
+                            </div>
+
+                            <div class="input-group">
+                                <label for="tweaker_a">Semi-major axis (a): <span id="val_tweaker_a">12000</span> km</label>
+                                <input type="range" id="tweaker_a" min="6500" max="60000" step="500" value="12000" oninput="onTweakerParamsChange()">
+                            </div>
+
+                            <div class="input-group">
+                                <label for="tweaker_e">Eccentricity (e): <span id="val_tweaker_e">0.10</span></label>
+                                <input type="range" id="tweaker_e" min="0.0" max="0.9" step="0.01" value="0.10" oninput="onTweakerParamsChange()">
+                            </div>
+
+                            <div class="input-group">
+                                <label for="tweaker_i">Inclination (i): <span id="val_tweaker_i">28.5</span>°</label>
+                                <input type="range" id="tweaker_i" min="0" max="90" step="0.5" value="28.5" oninput="onTweakerParamsChange()">
+                                <button type="button" id="btn-solve-sunsync" class="btn btn-secondary" onclick="solveSunSyncInclination()" style="padding: 6px 10px; font-size: 11px; margin-top: 6px; width: 100%; border-radius: 6px; height: auto;">☀️ Solve Sun-Sync Inclination</button>
+                            </div>
+
+                            <div class="input-group">
+                                <label for="tweaker_raan">Ascending Node (Ω): <span id="val_tweaker_raan">0.0</span>°</label>
+                                <input type="range" id="tweaker_raan" min="0" max="360" step="1.0" value="0.0" oninput="onTweakerParamsChange()">
+                            </div>
+
+                            <div class="input-group" id="sunsync_raan_group" style="margin-top: 10px; border: 1px solid var(--card-border); padding: 10px; border-radius: 8px; background: var(--inner-bg);">
+                                <label style="font-size: 9px; font-weight: 600; color: var(--secondary-color);">Launch Date Plane Match</label>
+                                <div class="input-row" style="margin-top: 6px;">
+                                    <div class="input-group" style="margin-bottom: 0;">
+                                        <label for="tweaker_launch_date" style="font-size: 8px;">Date</label>
+                                        <input type="date" id="tweaker_launch_date" value="2032-08-15" onchange="onTweakerParamsChange()" style="font-size: 11px; padding: 6px; background: var(--control-bg); border: 1px solid var(--control-border); color: var(--text-primary);">
+                                    </div>
+                                    <div class="input-row" style="margin-bottom: 0;">
+                                        <label for="tweaker_ltan" style="font-size: 8px;">LTAN Node</label>
+                                        <select id="tweaker_ltan" onchange="onTweakerParamsChange()" style="font-size: 11px; padding: 6px; background: var(--control-bg); border: 1px solid var(--control-border); color: var(--text-primary);">
+                                            <option value="12.0" selected>Noon (12:00)</option>
+                                            <option value="6.0">6 AM (Dawn)</option>
+                                            <option value="18.0">6 PM (Dusk)</option>
+                                            <option value="0.0">Midnight</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <button type="button" id="btn-optimize-sunsync-raan" class="btn btn-accent" onclick="optimizeSunSyncRAAN()" style="padding: 6px 10px; font-size: 11px; margin-top: 8px; border-radius: 6px; height: auto;">🧬 Optimize Sun-Sync Plane (RAAN)</button>
+                            </div>
+
+                            <div class="input-group checkbox-group" style="flex-direction: row; align-items: center; gap: 8px; margin-top: 10px;">
+                                <input type="checkbox" id="tweaker_j2" onchange="onTweakerParamsChange()" style="width: auto; height: auto; cursor: pointer; margin: 0;">
+                                <label for="tweaker_j2" style="cursor: pointer; margin-bottom: 0; user-select: none;">Enable J2 Perturbation</label>
+                            </div>
+
+                            <div class="input-group checkbox-group" style="flex-direction: row; align-items: center; gap: 8px; margin-top: 10px;">
+                                <input type="checkbox" id="tweaker_nbody" onchange="toggleNBodyControls()" style="width: auto; height: auto; cursor: pointer; margin: 0;">
+                                <label for="tweaker_nbody" style="cursor: pointer; margin-bottom: 0; user-select: none;">Enable N-Body Propagation</label>
+                            </div>
+
+                            <div class="input-group" id="nbody_duration_group" style="display: none; margin-top: 10px;">
+                                <label for="tweaker_duration">Propagation Duration: <span id="val_tweaker_duration">15</span> days</label>
+                                <input type="range" id="tweaker_duration" min="5" max="90" step="5" value="15" oninput="onTweakerParamsChange()">
+                            </div>
+                            
+                            <hr class="separator" style="margin-top: 16px;">
+
+                            <h2 class="section-title">Active Station Keeping</h2>
+                            <div class="input-group" style="margin-top: 10px;">
+                                <label for="tweaker_dv_burn">Apoapsis Burn ΔV: <span id="val_tweaker_dv_burn">50</span> m/s</label>
+                                <input type="range" id="tweaker_dv_burn" min="10" max="800" step="10" value="50" oninput="onStationKeepingChange()">
+                            </div>
+                            <button type="button" id="btn-execute-sk-burn" class="btn btn-primary" onclick="executeStationKeepingBurn()" style="padding: 10px; font-size: 12px; border-radius: 8px;">🚀 Execute SK Burn (Raise Periapsis)</button>
+                            
+                            <div id="sk-results-panel" style="display: none; margin-top: 12px; border: 1px solid var(--card-border); padding: 12px; border-radius: 8px; background: var(--inner-bg); flex-direction: column; gap: 4px;">
+                                <span style="font-size: 9px; text-transform: uppercase; color: var(--text-secondary); font-weight: 500; letter-spacing: 0.5px;">Burn Simulation Results</span>
+                                <p style="font-size: 11px; margin-top: 4px;">Post-Burn Periapsis: <strong id="sk-new-alt" style="color: var(--accent-color);">-- km</strong></p>
+                                <p style="font-size: 11px;">Propellant Mass Required: <strong id="sk-fuel-mass" style="color: var(--primary-color);">-- kg</strong></p>
+                                <div id="sk-fuel-warning" style="display: none; border-radius: 6px; padding: 8px; background: rgba(239, 68, 68, 0.15); border: 1px solid var(--danger-color); color: var(--danger-color); font-weight: 600; font-size: 10px; text-align: center; width: 100%; margin-top: 6px; box-shadow: 0 0 10px rgba(239, 68, 68, 0.2);">
+                                    ⚠️ CRITICAL: PROPELLANT DEPLETED
+                                </div>
+                            </div>
+                            
+                            <hr class="separator" style="margin-top: 16px;">
+
+                            <h2 class="section-title">Orbital Transfers (Circular)</h2>
+                            <div class="input-group" style="margin-top: 10px;">
+                                <label for="transfer_type">Transfer Strategy</label>
+                                <select id="transfer_type" onchange="toggleTransferControls()" style="font-size: 11px; padding: 6px; background: var(--control-bg); border: 1px solid var(--control-border); width: 100%; border-radius: 6px; color: var(--text-primary);">
+                                    <option value="hohmann" selected>Hohmann (2-Impulse)</option>
+                                    <option value="bielliptic">Bi-elliptic (3-Impulse)</option>
+                                    <option value="lowthrust">Low-Thrust Spiral</option>
+                                </select>
+                            </div>
+                            <div class="input-group" style="margin-top: 10px;">
+                                <label for="transfer_target_r">Target Radius (r₂): <span id="val_transfer_target_r">25000</span> km</label>
+                                <input type="range" id="transfer_target_r" min="6500" max="60000" step="500" value="25000" oninput="onTransferParamsChange()">
+                            </div>
+                            <div class="input-group" id="transfer_boost_r_group" style="display: none; margin-top: 10px;">
+                                <label for="transfer_boost_r">Boost Apoapsis (r_b): <span id="val_transfer_boost_r">80000</span> km</label>
+                                <input type="range" id="transfer_boost_r" min="30000" max="150000" step="1000" value="80000" oninput="onTransferParamsChange()">
+                            </div>
+                            <div class="input-group" id="transfer_thrust_group" style="display: none; margin-top: 10px;">
+                                <label for="transfer_thrust">Thruster Thrust (T): <span id="val_transfer_thrust">0.50</span> N</label>
+                                <input type="range" id="transfer_thrust" min="0.01" max="5.00" step="0.01" value="0.50" oninput="onTransferParamsChange()">
+                            </div>
+                            <button type="button" id="btn-compute-transfer" class="btn btn-accent" onclick="executeTransferSolver()" style="padding: 10px; font-size: 12px; border-radius: 8px; width: 100%; margin-top: 8px;">📊 Compute Transfer Trajectory</button>
+                            
+                            <div id="transfer-results-panel" style="display: none; margin-top: 12px; border: 1px solid var(--card-border); padding: 12px; border-radius: 8px; background: var(--inner-bg); flex-direction: column; gap: 4px;">
+                                <span style="font-size: 9px; text-transform: uppercase; color: var(--text-secondary); font-weight: 500; letter-spacing: 0.5px;">Transfer Solution Details</span>
+                                <div id="transfer-impulsive-details">
+                                    <p style="font-size: 11px; margin-top: 4px;">Departure Burn ΔV₁: <strong id="tr-dv1" style="color: var(--primary-color);">-- km/s</strong></p>
+                                    <p style="font-size: 11px;" id="tr-dv2-row">Apoapsis Burn ΔV₂: <strong id="tr-dv2" style="color: var(--primary-color);">-- km/s</strong></p>
+                                    <p style="font-size: 11px;" id="tr-dv3-row" style="display: none;">Arrival Burn ΔV₃: <strong id="tr-dv3" style="color: var(--primary-color);">-- km/s</strong></p>
+                                </div>
+                                <div id="transfer-lowthrust-details" style="display: none;">
+                                    <p style="font-size: 11px; margin-top: 4px;">Propellant Consumed: <strong id="tr-prop-mass" style="color: var(--primary-color);">-- kg</strong></p>
+                                    <p style="font-size: 11px;">Final Dry Mass: <strong id="tr-final-mass" style="color: var(--primary-color);">-- kg</strong></p>
+                                </div>
+                                <p style="font-size: 11px; border-top: 1px solid var(--card-border); padding-top: 4px; margin-top: 4px;">Total ΔV Budget: <strong id="tr-total-dv" style="color: var(--accent-color);">-- km/s</strong></p>
+                                <p style="font-size: 11px;">Time of Flight: <strong id="tr-tof" style="color: var(--accent-color);">-- days</strong></p>
+                            </div>
+                        </form>
+                    </section>
+
+                    <!-- Right Content Area -->
+                    <div class="content-area">
+                        <!-- Placeholder 3 -->
+                        <div id="sim-placeholder-3"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page 4: Monte Carlo -->
+            <div id="page-monte-carlo" class="tab-page">
+                <div class="dashboard-grid">
+                    <!-- Left Sidebar Controls -->
+                    <section class="control-panel glass-card">
+                        <h2 class="section-title">Monte Carlo Uncertainty</h2>
+                        <form id="mc-form" onsubmit="event.preventDefault();" style="display: flex; flex-direction: column; gap: 4px;">
+                            <div class="input-group" style="margin-top: 10px;">
+                                <label for="mc_runs">Monte Carlo Runs: <span id="val_mc_runs">30</span></label>
+                                <input type="range" id="mc_runs" min="10" max="100" step="10" value="30" oninput="onMonteCarloParamsChange()">
+                            </div>
+                            <div class="input-group" style="margin-top: 10px;">
+                                <label for="mc_pos_std">Initial Position 1σ Error: <span id="val_mc_pos_std">10</span> km</label>
+                                <input type="range" id="mc_pos_std" min="1" max="100" step="1" value="10" oninput="onMonteCarloParamsChange()">
+                            </div>
+                            <div class="input-group" style="margin-top: 10px;">
+                                <label for="mc_vel_std">Initial Velocity 1σ Error: <span id="val_mc_vel_std">0.5</span> m/s</label>
+                                <input type="range" id="mc_vel_std" min="0.1" max="10.0" step="0.1" value="0.5" oninput="onMonteCarloParamsChange()">
+                            </div>
+                            <div class="input-group" style="margin-top: 10px;">
+                                <label for="mc_duration">Propagation Duration: <span id="val_mc_duration">5</span> days</label>
+                                <input type="range" id="mc_duration" min="1" max="30" step="1" value="5" oninput="onMonteCarloParamsChange()">
+                            </div>
+                            <button type="button" id="btn-run-mc" class="btn btn-accent" onclick="executeMonteCarlo()" style="padding: 10px; font-size: 12px; border-radius: 8px; width: 100%; margin-top: 8px;">🎲 Run Monte Carlo Dispersion</button>
+                        </form>
+                    </section>
+
+                    <!-- Right Content Area -->
+                    <div class="content-area">
+                        <!-- Placeholder 4 -->
+                        <div id="sim-placeholder-4"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page 5: Systems Twin -->
+            <div id="page-systems-twin" class="tab-page">
+                <div class="dashboard-grid" style="grid-template-columns: 1fr;">
+                    <section class="diagnostics-section glass-card" id="diagnostics-card" style="margin-top: 0;">
+                        <div class="diag-tab-bar">
+                            <button class="diag-tab active" id="tab-ekf" onclick="switchDiagTab('ekf')">🛰️ EKF Filter</button>
+                            <button class="diag-tab" id="tab-ccsds" onclick="switchDiagTab('ccsds')">📡 CCSDS Parser</button>
+                            <button class="diag-tab" id="tab-anomaly" onclick="switchDiagTab('anomaly')">🔮 Anomaly Forecast</button>
+                            <button class="diag-tab" id="tab-vacuum" onclick="switchDiagTab('vacuum')">🔬 Vacuum Sim</button>
+                            <button class="diag-tab" id="tab-erosion" onclick="switchDiagTab('erosion')">⚗️ Grid Erosion</button>
+                        </div>
+
+                        <!-- EKF Tab -->
+                        <div class="diag-tab-content active" id="diag-ekf">
+                            <div class="diag-panel-grid">
+                                <div class="diag-controls">
+                                    <h3 class="diag-title">Extended Kalman Filter Simulation</h3>
+                                    <p class="diag-desc">Simulates EKF state estimation with fault injection on a circular orbit trajectory.</p>
+                                    <div class="diag-form">
+                                        <div class="diag-input-group">
+                                            <label for="ekf_orbit_radius">Orbit Radius (km)</label>
+                                            <input type="number" id="ekf_orbit_radius" value="7000" min="6500" max="50000" step="100">
+                                        </div>
+                                        <div class="diag-input-group">
+                                            <label for="ekf_steps">Simulation Steps</label>
+                                            <input type="number" id="ekf_steps" value="200" min="50" max="500" step="50">
+                                        </div>
+                                        <div class="diag-input-group">
+                                            <label for="ekf_dt">Time Step (s)</label>
+                                            <input type="number" id="ekf_dt" value="10.0" min="1" max="60" step="1">
+                                        </div>
+                                        <div class="diag-input-group">
+                                            <label for="ekf_meas_noise">Measurement Noise σ (km)</label>
+                                            <input type="number" id="ekf_meas_noise" value="0.05" min="0.001" max="1.0" step="0.01">
+                                        </div>
+                                        <div class="diag-input-group">
+                                            <label for="ekf_fault_step">Fault Injection Step</label>
+                                            <input type="number" id="ekf_fault_step" value="100" min="10" max="450" step="10">
+                                        </div>
+                                        <div class="diag-input-group">
+                                            <label for="ekf_fault_mag">Fault Magnitude (km)</label>
+                                            <input type="number" id="ekf_fault_mag" value="5.0" min="0.1" max="50" step="0.1">
+                                        </div>
+                                        <button class="btn btn-primary" id="btn-run-ekf" onclick="runEKFSimulation()">⚡ Run EKF Filter</button>
+                                    </div>
+                                    <div id="ekf-status" class="diag-status" style="display:none;"></div>
+                                </div>
+                                <div class="diag-chart-area">
+                                    <div id="plot-ekf" class="diag-chart-container">
+                                        <div class="chart-placeholder"><p>Configure EKF parameters and click <strong>Run EKF Filter</strong> to visualize state estimation.</p></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CCSDS Tab -->
+                        <div class="diag-tab-content" id="diag-ccsds" style="display:none;">
+                            <div class="diag-panel-grid">
+                                <div class="diag-controls">
+                                    <h3 class="diag-title">CCSDS Telemetry Packet Parser</h3>
+                                    <p class="diag-desc">Decode a CCSDS Space Packet hex string and inspect header fields.</p>
+                                    <div class="diag-form">
+                                        <div class="diag-input-group" style="grid-column: 1 / -1;">
+                                            <label for="ccsds_hex">CCSDS Hex Packet</label>
+                                            <textarea id="ccsds_hex" rows="4" style="background:var(--control-bg);border:1px solid var(--control-border);border-radius:8px;padding:10px;color:var(--text-primary);font-family:monospace;font-size:12px;width:100%;resize:vertical;">0801C000000800000000000041F0000042480000</textarea>
+                                        </div>
+                                        <button class="btn btn-accent" id="btn-parse-ccsds" onclick="parseCCSDSPacket()" style="grid-column: 1 / -1;">📡 Parse Packet</button>
+                                    </div>
+                                    <div id="ccsds-status" class="diag-status" style="display:none;"></div>
+                                </div>
+                                <div class="diag-chart-area">
+                                    <div id="ccsds-results" class="diag-chart-container" style="padding:20px; overflow-y:auto;">
+                                        <div class="chart-placeholder"><p>Enter a hex-encoded CCSDS packet and click <strong>Parse Packet</strong> to inspect telemetry fields.</p></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Anomaly Forecast Tab -->
+                        <div class="diag-tab-content" id="diag-anomaly" style="display:none;">
+                            <div class="diag-panel-grid">
+                                <div class="diag-controls">
+                                    <h3 class="diag-title">AI Anomaly Forecasting</h3>
+                                    <p class="diag-desc">Feed a telemetry history time-series to the AI Digital Twin and forecast future anomalies.</p>
+                                    <div class="diag-form">
+                                        <div class="diag-input-group" style="grid-column: 1 / -1;">
+                                            <label for="anomaly_param">Parameter Name</label>
+                                            <input type="text" id="anomaly_param" value="thruster_temp">
+                                        </div>
+                                        <div class="diag-input-group" style="grid-column: 1 / -1;">
+                                            <label for="anomaly_history">History Values (comma-separated)</label>
+                                            <textarea id="anomaly_history" rows="3" style="background:var(--control-bg);border:1px solid var(--control-border);border-radius:8px;padding:10px;color:var(--text-primary);font-family:monospace;font-size:12px;width:100%;resize:vertical;">320,322,325,329,334,341,350,361,374,389</textarea>
+                                        </div>
+                                        <div class="diag-input-group">
+                                            <label for="anomaly_steps">Forecast Steps</label>
+                                            <input type="number" id="anomaly_steps" value="5" min="1" max="20">
+                                        </div>
+                                        <div class="diag-input-group">
+                                            <label for="anomaly_min">Safety Min</label>
+                                            <input type="number" id="anomaly_min" value="280">
+                                        </div>
+                                        <div class="diag-input-group">
+                                            <label for="anomaly_max">Safety Max</label>
+                                            <input type="number" id="anomaly_max" value="400">
+                                        </div>
+                                        <button class="btn btn-primary" id="btn-anomaly-forecast" onclick="runAnomalyForecast()" style="grid-column: 1 / -1;">🔮 Run Forecast</button>
+                                    </div>
+                                    <div id="anomaly-status" class="diag-status" style="display:none;"></div>
+                                </div>
+                                <div class="diag-chart-area">
+                                    <div id="plot-anomaly" class="diag-chart-container">
+                                        <div class="chart-placeholder"><p>Input telemetry history and click <strong>Run Forecast</strong> to predict anomaly windows.</p></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Vacuum Sim Tab -->
+                        <div class="diag-tab-content" id="diag-vacuum" style="display:none;">
+                            <div class="diag-panel-grid">
+                                <div class="diag-controls">
+                                    <h3 class="diag-title">Vacuum Chamber Simulation</h3>
+                                    <p class="diag-desc">Simulate chamber pressure decay with configurable leak and pump parameters.</p>
+                                    <div class="diag-form">
+                                        <div class="diag-input-group">
+                                            <label for="vac_p_init">Initial Pressure (Torr)</label>
+                                            <input type="number" id="vac_p_init" value="760" min="0.001" max="760" step="1">
+                                        </div>
+                                        <div class="diag-input-group">
+                                            <label for="vac_leak">Leak Rate (Torr·L/s)</label>
+                                            <input type="number" id="vac_leak" value="1e-6" min="1e-9" max="0.01" step="1e-7">
+                                        </div>
+                                        <div class="diag-input-group">
+                                            <label for="vac_pump">Pump Speed (L/s)</label>
+                                            <input type="number" id="vac_pump" value="500" min="1" max="10000" step="10">
+                                        </div>
+                                        <div class="diag-input-group">
+                                            <label for="vac_volume">Chamber Volume (L)</label>
+                                            <input type="number" id="vac_volume" value="1000" min="1" max="100000" step="10">
+                                        </div>
+                                        <div class="diag-input-group" style="grid-column: 1 / -1;">
+                                            <label for="vac_duration">Duration (s)</label>
+                                            <input type="number" id="vac_duration" value="300" min="10" max="3600" step="10">
+                                        </div>
+                                        <button class="btn btn-accent" id="btn-run-vacuum" onclick="runVacuumSim()" style="grid-column: 1 / -1;">🔬 Run Vacuum Sim</button>
+                                    </div>
+                                    <div id="vacuum-status" class="diag-status" style="display:none;"></div>
+                                </div>
+                                <div class="diag-chart-area">
+                                    <div id="plot-vacuum" class="diag-chart-container">
+                                        <div class="chart-placeholder"><p>Set chamber parameters and click <strong>Run Vacuum Sim</strong> to plot pressure decay.</p></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Grid Erosion Tab -->
+                        <div class="diag-tab-content" id="diag-erosion" style="display:none;">
+                            <div class="diag-panel-grid">
+                                <div class="diag-controls">
+                                    <h3 class="diag-title">Ion Thruster Grid Erosion Rate</h3>
+                                    <p class="diag-desc">Calculate erosion rates for thruster grid materials under ion bombardment conditions.</p>
+                                    <div class="diag-form">
+                                        <div class="diag-input-group" style="grid-column: 1 / -1;">
+                                            <label for="erosion_material">Grid Material</label>
+                                            <select id="erosion_material">
+                                                <option value="molybdenum" selected>Molybdenum (Mo)</option>
+                                                <option value="carbon">Carbon (C)</option>
+                                                <option value="tungsten">Tungsten (W)</option>
+                                                <option value="titanium">Titanium (Ti)</option>
+                                            </select>
+                                        </div>
+                                        <div class="diag-input-group">
+                                            <label for="erosion_energy">Ion Energy (eV)</label>
+                                            <input type="number" id="erosion_energy" value="300" min="50" max="2000" step="10">
+                                        </div>
+                                        <div class="diag-input-group">
+                                            <label for="erosion_current">Current Density (A/m²)</label>
+                                            <input type="number" id="erosion_current" value="50" min="1" max="1000" step="5">
+                                        </div>
+                                        <button class="btn btn-primary" id="btn-calc-erosion" onclick="calcErosionRate()" style="grid-column: 1 / -1;">⚗️ Calculate Erosion Rate</button>
+                                    </div>
+                                    <div id="erosion-status" class="diag-status" style="display:none;"></div>
+                                </div>
+                                <div class="diag-chart-area">
+                                    <div id="erosion-results" class="diag-chart-container" style="padding:20px; overflow-y:auto;">
+                                        <div class="chart-placeholder"><p>Select material and ion conditions, then click <strong>Calculate Erosion Rate</strong>.</p></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </section>
                 </div>
-
-                <!-- Row 3: Output Telemetry Metrics -->
-                <section class="metrics-section">
-                    <div class="metric-card glass-card" id="metric-feasibility">
-                        <h3>Feasibility Check</h3>
-                        <div class="metric-value">N/A</div>
-                        <div class="metric-desc">Checks planetary ranges and mass ratios</div>
-                    </div>
-                    <div class="metric-card glass-card" id="metric-deltav">
-                        <h3>Total ΔV Budget</h3>
-                        <div class="metric-value">N/A</div>
-                        <div class="metric-desc">Cumulative burn velocity budget</div>
-                    </div>
-                    <div class="metric-card glass-card" id="metric-propellant">
-                        <h3>Propellant Fraction</h3>
-                        <div class="metric-value">N/A</div>
-                        <div class="metric-desc">Ratio of fuel mass to wet mass</div>
-                    </div>
-                    <div class="metric-card glass-card" id="metric-risk">
-                        <h3>Mission Risk Index</h3>
-                        <div class="metric-value">N/A</div>
-                        <div class="metric-desc">Statistical safety score (0 - 100)</div>
-                    </div>
-                </section>
-
-                <!-- Row 4: Event Timeline -->
-                <section class="timeline-section glass-card" id="timeline-card" style="display: none;">
-                    <h2>Mission Timeline & Event Schedule</h2>
-                    <div class="timeline-container">
-                        <table class="timeline-table">
-                            <thead>
-                                <tr>
-                                    <th>Event Milestone</th>
-                                    <th>Burn ΔV (m/s)</th>
-                                    <th>Start Mass (kg)</th>
-                                    <th>End Mass (kg)</th>
-                                    <th>Fuel Consumed (kg)</th>
-                                </tr>
-                            </thead>
-                            <tbody id="timeline-body">
-                            </tbody>
-                        </table>
-                    </div>
-                </section>
-
             </div>
 
-                <!-- Row 5: Digital Twin & Propulsion Diagnostics (Tabbed Panel) -->
-                <section class="diagnostics-section glass-card" id="diagnostics-card">
-                    <div class="diag-tab-bar">
-                        <button class="diag-tab active" id="tab-ekf" onclick="switchDiagTab('ekf')">🛰️ EKF Filter</button>
-                        <button class="diag-tab" id="tab-ccsds" onclick="switchDiagTab('ccsds')">📡 CCSDS Parser</button>
-                        <button class="diag-tab" id="tab-anomaly" onclick="switchDiagTab('anomaly')">🔮 Anomaly Forecast</button>
-                        <button class="diag-tab" id="tab-vacuum" onclick="switchDiagTab('vacuum')">🔬 Vacuum Sim</button>
-                        <button class="diag-tab" id="tab-erosion" onclick="switchDiagTab('erosion')">⚗️ Grid Erosion</button>
+            <!-- Page 6: Scenario Library -->
+            <div id="page-scenario-library" class="tab-page">
+                <div class="scenarios-container">
+                    <div class="scenario-intro glass-card">
+                        <h2>Preset Demo Cases & Aerospace Mission Library</h2>
+                        <p>Select any of the curated spacecraft scenarios below. Loading a scenario will configure the parameters, run the physics solvers, and render live visual metrics.</p>
                     </div>
 
-                    <!-- EKF Tab -->
-                    <div class="diag-tab-content active" id="diag-ekf">
-                        <div class="diag-panel-grid">
-                            <div class="diag-controls">
-                                <h3 class="diag-title">Extended Kalman Filter Simulation</h3>
-                                <p class="diag-desc">Simulates EKF state estimation with fault injection on a circular orbit trajectory.</p>
-                                <div class="diag-form">
-                                    <div class="diag-input-group">
-                                        <label for="ekf_orbit_radius">Orbit Radius (km)</label>
-                                        <input type="number" id="ekf_orbit_radius" value="7000" min="6500" max="50000" step="100">
-                                    </div>
-                                    <div class="diag-input-group">
-                                        <label for="ekf_steps">Simulation Steps</label>
-                                        <input type="number" id="ekf_steps" value="200" min="50" max="500" step="50">
-                                    </div>
-                                    <div class="diag-input-group">
-                                        <label for="ekf_dt">Time Step (s)</label>
-                                        <input type="number" id="ekf_dt" value="10.0" min="1" max="60" step="1">
-                                    </div>
-                                    <div class="diag-input-group">
-                                        <label for="ekf_meas_noise">Measurement Noise σ (km)</label>
-                                        <input type="number" id="ekf_meas_noise" value="0.05" min="0.001" max="1.0" step="0.01">
-                                    </div>
-                                    <div class="diag-input-group">
-                                        <label for="ekf_fault_step">Fault Injection Step</label>
-                                        <input type="number" id="ekf_fault_step" value="100" min="10" max="450" step="10">
-                                    </div>
-                                    <div class="diag-input-group">
-                                        <label for="ekf_fault_mag">Fault Magnitude (km)</label>
-                                        <input type="number" id="ekf_fault_mag" value="5.0" min="0.1" max="50" step="0.1">
-                                    </div>
-                                    <button class="btn btn-primary" id="btn-run-ekf" onclick="runEKFSimulation()">⚡ Run EKF Filter</button>
-                                </div>
-                                <div id="ekf-status" class="diag-status" style="display:none;"></div>
+                    <div class="scenarios-grid">
+                        <!-- Card 1 -->
+                        <div class="scenario-card glass-card">
+                            <div class="card-badge primary">Orbital Mechanics</div>
+                            <h3>1. Lunar Gateway Transfer</h3>
+                            <p class="desc">A double-burn Hohmann transfer simulation between Low Earth Orbit (LEO) and Lunar orbital radius.</p>
+                            <div class="meta-row">
+                                <span>🚀 Transfer</span>
+                                <span>🛰️ Earth ➔ Moon</span>
                             </div>
-                            <div class="diag-chart-area">
-                                <div id="plot-ekf" class="diag-chart-container">
-                                    <div class="chart-placeholder"><p>Configure EKF parameters and click <strong>Run EKF Filter</strong> to visualize state estimation.</p></div>
-                                </div>
+                            <button class="btn btn-primary btn-run-scenario" onclick="loadScenario('lunar-transfer')">Load & Execute</button>
+                        </div>
+
+                        <!-- Card 2 -->
+                        <div class="scenario-card glass-card">
+                            <div class="card-badge secondary">Interplanetary</div>
+                            <h3>2. Crewed Mars Transit</h3>
+                            <p class="desc">Plan an Earth-to-Mars fast chemical transit, mapping launch windows (Porkchop) and delta-V costs.</p>
+                            <div class="meta-row">
+                                <span>🧬 GA Optim</span>
+                                <span>🪐 Heliocentric</span>
                             </div>
+                            <button class="btn btn-primary btn-run-scenario" onclick="loadScenario('mars-transit')">Load & Execute</button>
+                        </div>
+
+                        <!-- Card 3 -->
+                        <div class="scenario-card glass-card">
+                            <div class="card-badge accent">Electric Propulsion</div>
+                            <h3>3. Low-Thrust Bennu Spiral</h3>
+                            <p class="desc">Simulates a continuous low-thrust spiral transfer matching the orbital plane of Asteroid Bennu.</p>
+                            <div class="meta-row">
+                                <span>⚡ Continuous</span>
+                                <span>☄️ Rendezvous</span>
+                            </div>
+                            <button class="btn btn-primary btn-run-scenario" onclick="loadScenario('bennu-spiral')">Load & Execute</button>
+                        </div>
+
+                        <!-- Card 4 -->
+                        <div class="scenario-card glass-card">
+                            <div class="card-badge info">Perturbations</div>
+                            <h3>4. Sun-Sync Earth Observation</h3>
+                            <p class="desc">Design a sun-synchronous observation orbit, using Earth's J2 oblateness to match launch dates.</p>
+                            <div class="meta-row">
+                                <span>☀️ Sun-Sync</span>
+                                <span>🌍 Low Earth Orbit</span>
+                            </div>
+                            <button class="btn btn-primary btn-run-scenario" onclick="loadScenario('sunsync-orbit')">Load & Execute</button>
+                        </div>
+
+                        <!-- Card 5 -->
+                        <div class="scenario-card glass-card">
+                            <div class="card-badge danger">Digital Twin</div>
+                            <h3>5. Spacecraft Diagnostics</h3>
+                            <p class="desc">Simulate telemetry filtering with Kalman estimators, and forecast thruster temperature anomalies.</p>
+                            <div class="meta-row">
+                                <span>🔮 AI Predictive</span>
+                                <span>🛰️ State Kalman</span>
+                            </div>
+                            <button class="btn btn-primary btn-run-scenario" onclick="loadScenario('systems-twin')">Load & Execute</button>
                         </div>
                     </div>
 
-                    <!-- CCSDS Tab -->
-                    <div class="diag-tab-content" id="diag-ccsds" style="display:none;">
-                        <div class="diag-panel-grid">
-                            <div class="diag-controls">
-                                <h3 class="diag-title">CCSDS Telemetry Packet Parser</h3>
-                                <p class="diag-desc">Decode a CCSDS Space Packet hex string and inspect header fields.</p>
-                                <div class="diag-form">
-                                    <div class="diag-input-group" style="grid-column: 1 / -1;">
-                                        <label for="ccsds_hex">CCSDS Hex Packet</label>
-                                        <textarea id="ccsds_hex" rows="4" style="background:rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:10px;color:var(--text-primary);font-family:monospace;font-size:12px;width:100%;resize:vertical;">0801C000000800000000000041F0000042480000</textarea>
-                                    </div>
-                                    <button class="btn btn-accent" id="btn-parse-ccsds" onclick="parseCCSDSPacket()" style="grid-column: 1 / -1;">📡 Parse Packet</button>
-                                </div>
-                                <div id="ccsds-status" class="diag-status" style="display:none;"></div>
+                    <!-- Scenario Results Info Board -->
+                    <div id="scenario-info-board" class="glass-card" style="display: none; margin-top: 20px; padding: 20px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--card-border); padding-bottom: 12px; margin-bottom: 16px;">
+                            <h3 id="board-scenario-name" style="font-family: 'Outfit', sans-serif; font-size: 20px; font-weight: 700; color: var(--accent-color);">Scenario Details</h3>
+                            <span class="badge" id="board-scenario-badge" style="background: rgba(var(--primary-color-rgb), 0.15); color: var(--primary-color); padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; text-transform: uppercase; border: 1px solid rgba(var(--primary-color-rgb), 0.3);">Active</span>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px;">
+                            <div>
+                                <h4 style="font-size: 12px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">Mission Overview</h4>
+                                <p id="board-scenario-desc" style="font-size: 13px; line-height: 1.6; margin-bottom: 16px;">Description details...</p>
+                                <h4 style="font-size: 12px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">Physics & Astrodynamics Principles</h4>
+                                <p id="board-scenario-physics" style="font-size: 13px; line-height: 1.6;">Physics explanations...</p>
                             </div>
-                            <div class="diag-chart-area">
-                                <div id="ccsds-results" class="diag-chart-container" style="padding:20px; overflow-y:auto;">
-                                    <div class="chart-placeholder"><p>Enter a hex-encoded CCSDS packet and click <strong>Parse Packet</strong> to inspect telemetry fields.</p></div>
+                            <div style="background: var(--inner-bg); border: 1px solid var(--card-border); padding: 16px; border-radius: 10px; display: flex; flex-direction: column; gap: 12px;">
+                                <h4 style="font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--card-border); padding-bottom: 6px;">Key Parameters Loaded</h4>
+                                <div style="display: flex; flex-direction: column; gap: 8px;" id="board-scenario-params">
+                                    <!-- Populated dynamically -->
                                 </div>
+                                <button class="btn btn-accent" style="margin-top: auto; padding: 10px; border-radius: 6px; font-size: 12px; font-weight: 600; text-align: center; text-transform: uppercase; letter-spacing: 0.5px;" onclick="navigateToActiveScenarioPage()">Open Interactive Screen</button>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Anomaly Forecast Tab -->
-                    <div class="diag-tab-content" id="diag-anomaly" style="display:none;">
-                        <div class="diag-panel-grid">
-                            <div class="diag-controls">
-                                <h3 class="diag-title">AI Anomaly Forecasting</h3>
-                                <p class="diag-desc">Feed a telemetry history time-series to the AI Digital Twin and forecast future anomalies.</p>
-                                <div class="diag-form">
-                                    <div class="diag-input-group" style="grid-column: 1 / -1;">
-                                        <label for="anomaly_param">Parameter Name</label>
-                                        <input type="text" id="anomaly_param" value="thruster_temp">
-                                    </div>
-                                    <div class="diag-input-group" style="grid-column: 1 / -1;">
-                                        <label for="anomaly_history">History Values (comma-separated)</label>
-                                        <textarea id="anomaly_history" rows="3" style="background:rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:10px;color:var(--text-primary);font-family:monospace;font-size:12px;width:100%;resize:vertical;">320,322,325,329,334,341,350,361,374,389</textarea>
-                                    </div>
-                                    <div class="diag-input-group">
-                                        <label for="anomaly_steps">Forecast Steps</label>
-                                        <input type="number" id="anomaly_steps" value="5" min="1" max="20">
-                                    </div>
-                                    <div class="diag-input-group">
-                                        <label for="anomaly_min">Safety Min</label>
-                                        <input type="number" id="anomaly_min" value="280">
-                                    </div>
-                                    <div class="diag-input-group">
-                                        <label for="anomaly_max">Safety Max</label>
-                                        <input type="number" id="anomaly_max" value="400">
-                                    </div>
-                                    <button class="btn btn-primary" id="btn-anomaly-forecast" onclick="runAnomalyForecast()" style="grid-column: 1 / -1;">🔮 Run Forecast</button>
-                                </div>
-                                <div id="anomaly-status" class="diag-status" style="display:none;"></div>
-                            </div>
-                            <div class="diag-chart-area">
-                                <div id="plot-anomaly" class="diag-chart-container">
-                                    <div class="chart-placeholder"><p>Input telemetry history and click <strong>Run Forecast</strong> to predict anomaly windows.</p></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Vacuum Sim Tab -->
-                    <div class="diag-tab-content" id="diag-vacuum" style="display:none;">
-                        <div class="diag-panel-grid">
-                            <div class="diag-controls">
-                                <h3 class="diag-title">Vacuum Chamber Simulation</h3>
-                                <p class="diag-desc">Simulate chamber pressure decay with configurable leak and pump parameters.</p>
-                                <div class="diag-form">
-                                    <div class="diag-input-group">
-                                        <label for="vac_p_init">Initial Pressure (Torr)</label>
-                                        <input type="number" id="vac_p_init" value="760" min="0.001" max="760" step="1">
-                                    </div>
-                                    <div class="diag-input-group">
-                                        <label for="vac_leak">Leak Rate (Torr·L/s)</label>
-                                        <input type="number" id="vac_leak" value="1e-6" min="1e-9" max="0.01" step="1e-7">
-                                    </div>
-                                    <div class="diag-input-group">
-                                        <label for="vac_pump">Pump Speed (L/s)</label>
-                                        <input type="number" id="vac_pump" value="500" min="1" max="10000" step="10">
-                                    </div>
-                                    <div class="diag-input-group">
-                                        <label for="vac_volume">Chamber Volume (L)</label>
-                                        <input type="number" id="vac_volume" value="1000" min="1" max="100000" step="10">
-                                    </div>
-                                    <div class="diag-input-group" style="grid-column: 1 / -1;">
-                                        <label for="vac_duration">Duration (s)</label>
-                                        <input type="number" id="vac_duration" value="300" min="10" max="3600" step="10">
-                                    </div>
-                                    <button class="btn btn-accent" id="btn-run-vacuum" onclick="runVacuumSim()" style="grid-column: 1 / -1;">🔬 Run Vacuum Sim</button>
-                                </div>
-                                <div id="vacuum-status" class="diag-status" style="display:none;"></div>
-                            </div>
-                            <div class="diag-chart-area">
-                                <div id="plot-vacuum" class="diag-chart-container">
-                                    <div class="chart-placeholder"><p>Set chamber parameters and click <strong>Run Vacuum Sim</strong> to plot pressure decay.</p></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Grid Erosion Tab -->
-                    <div class="diag-tab-content" id="diag-erosion" style="display:none;">
-                        <div class="diag-panel-grid">
-                            <div class="diag-controls">
-                                <h3 class="diag-title">Ion Thruster Grid Erosion Rate</h3>
-                                <p class="diag-desc">Calculate erosion rates for thruster grid materials under ion bombardment conditions.</p>
-                                <div class="diag-form">
-                                    <div class="diag-input-group" style="grid-column: 1 / -1;">
-                                        <label for="erosion_material">Grid Material</label>
-                                        <select id="erosion_material">
-                                            <option value="molybdenum" selected>Molybdenum (Mo)</option>
-                                            <option value="carbon">Carbon (C)</option>
-                                            <option value="tungsten">Tungsten (W)</option>
-                                            <option value="titanium">Titanium (Ti)</option>
-                                        </select>
-                                    </div>
-                                    <div class="diag-input-group">
-                                        <label for="erosion_energy">Ion Energy (eV)</label>
-                                        <input type="number" id="erosion_energy" value="300" min="50" max="2000" step="10">
-                                    </div>
-                                    <div class="diag-input-group">
-                                        <label for="erosion_current">Current Density (A/m²)</label>
-                                        <input type="number" id="erosion_current" value="50" min="1" max="1000" step="5">
-                                    </div>
-                                    <button class="btn btn-primary" id="btn-calc-erosion" onclick="calcErosionRate()" style="grid-column: 1 / -1;">⚗️ Calculate Erosion Rate</button>
-                                </div>
-                                <div id="erosion-status" class="diag-status" style="display:none;"></div>
-                            </div>
-                            <div class="diag-chart-area">
-                                <div id="erosion-results" class="diag-chart-container" style="padding:20px; overflow-y:auto;">
-                                    <div class="chart-placeholder"><p>Select material and ion conditions, then click <strong>Calculate Erosion Rate</strong>.</p></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
+                </div>
             </div>
+
+            <!-- Page 7: Validation & Credibility Console -->
+            <div id="page-validation-credibility" class="tab-page">
+                <div class="scenarios-container">
+                    <div class="scenario-intro glass-card">
+                        <h2>Simulation Credibility & Benchmark Verification Console</h2>
+                        <p>Verify simulation math, numerical propagators, and mission parameters in real-time against standard aerospace datasets (Apollo 11, Mars Science Laboratory, and JPL DE421 Planetary Constants Catalog).</p>
+                    </div>
+
+                    <!-- Credibility Overview Dashboard Grid -->
+                    <div class="dashboard-grid">
+                        
+                        <!-- Left Panel: Live verification tests -->
+                        <section class="control-panel glass-card">
+                            <h2 class="section-title">Active Test Runs</h2>
+                            <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 12px;">Run the real-time aerospace verification suite verifying math, integration, and physics layers.</p>
+                            <button class="btn btn-primary" onclick="runLiveVerificationSuite()" id="btn-run-validation" style="width: 100%; margin-bottom: 20px;">🧪 Run Live Verification</button>
+                            
+                            <h3 class="section-title" style="font-size: 13px; margin-bottom: 12px; border-left: 2px solid var(--secondary-color);">Suite Status</h3>
+                            <div class="timeline-container">
+                                <table class="timeline-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Verification Layer</th>
+                                            <th>Result</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="live-validation-results">
+                                        <tr><td colspan="2" style="text-align: center; color: var(--text-secondary); font-style: italic; font-size: 12px; padding: 16px;">Click button to execute verification runs.</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+
+                        <!-- Right Panel: Historical & Numerical Comparison -->
+                        <section class="control-panel glass-card" style="display: flex; flex-direction: column; gap: 20px;">
+                            <h2 class="section-title">NASA Reference Orbit Comparisons</h2>
+                            <div class="timeline-container">
+                                <table class="timeline-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Spacecraft / Orbit</th>
+                                            <th>Parameter</th>
+                                            <th>NASA Ground Truth</th>
+                                            <th>Computed Value</th>
+                                            <th>Rel. Error</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="orbit-benchmark-table">
+                                        <!-- Populated dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <h2 class="section-title">Historical Interplanetary Cases</h2>
+                            <div class="timeline-container">
+                                <table class="timeline-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Mission Name</th>
+                                            <th>Metric Checked</th>
+                                            <th>Historical Data</th>
+                                            <th>Dashboard Calculation</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="mission-benchmark-table">
+                                        <!-- Populated dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+                    </div>
+
+                    <!-- Second Grid: Numerical Solver & JPL Constants -->
+                    <div class="dashboard-grid">
+                        
+                        <!-- Left Panel: Solver exact math checking -->
+                        <section class="control-panel glass-card">
+                            <h2 class="section-title">Numerical Solver Error Analysis</h2>
+                            <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 12px;">Comparing RK4 and Dormand-Prince (DP45) numerical propagators against the exact analytical solution of a Harmonic Oscillator.</p>
+                            <button class="btn btn-secondary" onclick="runNumericalAnalysis()" id="btn-run-numerical" style="width: 100%; margin-bottom: 16px;">📈 Analyze Numerical Error</button>
+                            <div id="plot-solver-error" style="height: 300px; border-radius: 8px;"></div>
+                        </section>
+
+                        <!-- Right Panel: JPL constants catalog -->
+                        <section class="control-panel glass-card">
+                            <h2 class="section-title">JPL DE421 Planetary Constants Catalog</h2>
+                            <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 12px;">Loaded physical constant parameters from NASA/JPL planetary ephemeris datasets used in our digital twin models.</p>
+                            <div class="timeline-container">
+                                <table class="timeline-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Celestial Body</th>
+                                            <th>Semi-Major Axis (km)</th>
+                                            <th>Eccentricity</th>
+                                            <th>Inclination (deg)</th>
+                                            <th>Gravity Param (μ, km³/s²)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="jpl-planetary-table">
+                                        <!-- Populated dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+
         </main>
     </div>
-    <script src="/static/app.js"></script>
+    <script src="/static/app.js?v=2.1"></script>
 </body>
 </html>

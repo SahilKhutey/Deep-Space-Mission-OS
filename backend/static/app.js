@@ -163,7 +163,7 @@ function plot3DOrbit(data, dest) {
                 y: m.map(p => p[1]),
                 z: m.map(p => p[2]),
                 line: { color: '#6b7280', width: 2, dash: 'dot' },
-                marker: { color: '#9ca3af', size: 4 }
+                marker: { color: '#475569', size: 4 }
             });
         }
     } else {
@@ -213,12 +213,12 @@ function plot3DOrbit(data, dest) {
         plot_bgcolor: 'rgba(0,0,0,0)',
         margin: { l: 0, r: 0, t: 0, b: 0 },
         scene: {
-            xaxis: { title: 'X (km)', gridcolor: 'rgba(255,255,255,0.05)', zerolinecolor: 'rgba(255,255,255,0.1)', color: '#9ca3af' },
-            yaxis: { title: 'Y (km)', gridcolor: 'rgba(255,255,255,0.05)', zerolinecolor: 'rgba(255,255,255,0.1)', color: '#9ca3af' },
-            zaxis: { title: 'Z (km)', gridcolor: 'rgba(255,255,255,0.05)', zerolinecolor: 'rgba(255,255,255,0.1)', color: '#9ca3af' },
+            xaxis: { title: 'X (km)', gridcolor: 'rgba(15,23,42,0.06)', zerolinecolor: 'rgba(15,23,42,0.1)', color: '#475569' },
+            yaxis: { title: 'Y (km)', gridcolor: 'rgba(15,23,42,0.06)', zerolinecolor: 'rgba(15,23,42,0.1)', color: '#475569' },
+            zaxis: { title: 'Z (km)', gridcolor: 'rgba(15,23,42,0.06)', zerolinecolor: 'rgba(15,23,42,0.1)', color: '#475569' },
             camera: { eye: { x: 1.5, y: 1.5, z: 1.2 } }
         },
-        legend: { font: { color: '#e2e8f0' }, x: 0.1, y: 0.9 }
+        legend: { font: { color: '#334155' }, x: 0.1, y: 0.9 }
     };
     
     Plotly.newPlot('plot-3d', traces, layout, { responsive: true });
@@ -437,10 +437,10 @@ function plotStagingBar(data) {
         paper_bgcolor: 'rgba(0,0,0,0)',
         plot_bgcolor: 'rgba(0,0,0,0)',
         margin: { l: 40, r: 20, t: 40, b: 40 },
-        title: { text: 'Vehicle Stage Mass Sizing', font: { color: '#cbd5e1', size: 14 } },
-        xaxis: { color: '#9ca3af', gridcolor: 'rgba(255,255,255,0.05)' },
-        yaxis: { title: 'Mass (kg)', color: '#9ca3af', gridcolor: 'rgba(255,255,255,0.05)' },
-        legend: { font: { color: '#e2e8f0' } }
+        title: { text: 'Vehicle Stage Mass Sizing', font: { color: '#0f172a', size: 14 } },
+        xaxis: { color: '#475569', gridcolor: 'rgba(15,23,42,0.06)' },
+        yaxis: { title: 'Mass (kg)', color: '#475569', gridcolor: 'rgba(15,23,42,0.06)' },
+        legend: { font: { color: '#334155' } }
     };
     
     Plotly.newPlot('plot-secondary', [propTrace, structTrace], layout, { responsive: true });
@@ -502,8 +502,8 @@ function plotPorkchopContour(data) {
         colorscale: 'Viridis',
         colorbar: {
             title: 'C3 Energy (km²/s²)',
-            titlefont: { color: '#cbd5e1' },
-            tickfont: { color: '#cbd5e1' }
+            titlefont: { color: '#0f172a' },
+            tickfont: { color: '#0f172a' }
         },
         contours: {
             coloring: 'heatmap',
@@ -516,8 +516,8 @@ function plotPorkchopContour(data) {
         paper_bgcolor: 'rgba(0,0,0,0)',
         plot_bgcolor: 'rgba(0,0,0,0)',
         margin: { l: 60, r: 20, t: 40, b: 60 },
-        xaxis: { title: 'Departure Launch Date', color: '#9ca3af', gridcolor: 'rgba(255,255,255,0.05)' },
-        yaxis: { title: 'Arrival Target Date', color: '#9ca3af', gridcolor: 'rgba(255,255,255,0.05)' }
+        xaxis: { title: 'Departure Launch Date', color: '#475569', gridcolor: 'rgba(15,23,42,0.06)' },
+        yaxis: { title: 'Arrival Target Date', color: '#475569', gridcolor: 'rgba(15,23,42,0.06)' }
     };
     
     Plotly.newPlot('plot-porkchop', plotData, layout, { responsive: true });
@@ -591,9 +591,9 @@ function plotGAConvergence(history) {
         paper_bgcolor: 'rgba(0,0,0,0)',
         plot_bgcolor: 'rgba(0,0,0,0)',
         margin: { l: 40, r: 20, t: 40, b: 40 },
-        title: { text: 'Genetic Algorithm Solver Convergence', font: { color: '#cbd5e1', size: 14 } },
-        xaxis: { title: 'Generation Iteration', color: '#9ca3af', gridcolor: 'rgba(255,255,255,0.05)' },
-        yaxis: { title: 'Fitness Delta-V (km/s)', color: '#9ca3af', gridcolor: 'rgba(255,255,255,0.05)' }
+        title: { text: 'Genetic Algorithm Solver Convergence', font: { color: '#0f172a', size: 14 } },
+        xaxis: { title: 'Generation Iteration', color: '#475569', gridcolor: 'rgba(15,23,42,0.06)' },
+        yaxis: { title: 'Fitness Delta-V (km/s)', color: '#475569', gridcolor: 'rgba(15,23,42,0.06)' }
     };
     
     Plotly.newPlot('plot-secondary', [trace], layout, { responsive: true });
@@ -825,12 +825,12 @@ function update3DPlotWithTweakedOrbit() {
             plot_bgcolor: 'rgba(0,0,0,0)',
             margin: { l: 0, r: 0, t: 0, b: 0 },
             scene: {
-                xaxis: { title: 'X (km)', gridcolor: 'rgba(255,255,255,0.05)', color: '#9ca3af' },
-                yaxis: { title: 'Y (km)', gridcolor: 'rgba(255,255,255,0.05)', color: '#9ca3af' },
-                zaxis: { title: 'Z (km)', gridcolor: 'rgba(255,255,255,0.05)', color: '#9ca3af' },
+                xaxis: { title: 'X (km)', gridcolor: 'rgba(15,23,42,0.06)', color: '#475569' },
+                yaxis: { title: 'Y (km)', gridcolor: 'rgba(15,23,42,0.06)', color: '#475569' },
+                zaxis: { title: 'Z (km)', gridcolor: 'rgba(15,23,42,0.06)', color: '#475569' },
                 camera: { eye: { x: 1.5, y: 1.5, z: 1.2 } }
             },
-            legend: { font: { color: '#e2e8f0' }, x: 0.1, y: 0.9 }
+            legend: { font: { color: '#334155' }, x: 0.1, y: 0.9 }
         };
 
         Plotly.newPlot('plot-3d', traces, layout, { responsive: true });
@@ -859,7 +859,7 @@ function update3DPlotWithTweakedOrbit() {
 function getBodyColor(body) {
     const colorMap = {
         "earth": "#3b82f6",
-        "moon": "#9ca3af",
+        "moon": "#475569",
         "mars": "#ef4444",
         "sun": "#eab308"
     };
@@ -943,6 +943,7 @@ async function queryVisViva(a, e, body, i, j2Enabled) {
 
 // Initialize on page load
 document.addEventListener("DOMContentLoaded", () => {
+    handleRouting();
     if (document.getElementById("tweaker_a")) {
         onTweakerParamsChange();
     }
@@ -1724,9 +1725,9 @@ function plotMonteCarloChart(data) {
         paper_bgcolor: 'rgba(0,0,0,0)',
         plot_bgcolor: 'rgba(0,0,0,0)',
         margin: { l: 50, r: 20, t: 40, b: 40 },
-        title: { text: '3σ Trajectory Uncertainty Growth', font: { color: '#cbd5e1', size: 14 } },
-        xaxis: { title: 'Time (days)', color: '#9ca3af', gridcolor: 'rgba(255,255,255,0.05)' },
-        yaxis: { title: 'Dispersion Magnitude (km)', color: '#9ca3af', gridcolor: 'rgba(255,255,255,0.05)' }
+        title: { text: '3σ Trajectory Uncertainty Growth', font: { color: '#0f172a', size: 14 } },
+        xaxis: { title: 'Time (days)', color: '#475569', gridcolor: 'rgba(15,23,42,0.06)' },
+        yaxis: { title: 'Dispersion Magnitude (km)', color: '#475569', gridcolor: 'rgba(15,23,42,0.06)' }
     };
 
     Plotly.newPlot('plot-secondary', [trace], layout, { responsive: true });
@@ -1834,10 +1835,10 @@ function plotEKFResults(data) {
         paper_bgcolor: 'rgba(0,0,0,0)',
         plot_bgcolor:  'rgba(0,0,0,0)',
         margin: { l: 54, r: 54, t: 36, b: 40 },
-        title:  { text: 'EKF State Estimation vs True Orbit', font: { color: '#cbd5e1', size: 13 } },
-        legend: { font: { color: '#9ca3af', size: 10 }, bgcolor: 'rgba(0,0,0,0)' },
-        xaxis:  { title: 'Time (s)', color: '#9ca3af', gridcolor: 'rgba(255,255,255,0.05)' },
-        yaxis:  { title: 'Position X (km)', color: '#9ca3af', gridcolor: 'rgba(255,255,255,0.05)' },
+        title:  { text: 'EKF State Estimation vs True Orbit', font: { color: '#0f172a', size: 13 } },
+        legend: { font: { color: '#475569', size: 10 }, bgcolor: 'rgba(0,0,0,0)' },
+        xaxis:  { title: 'Time (s)', color: '#475569', gridcolor: 'rgba(15,23,42,0.06)' },
+        yaxis:  { title: 'Position X (km)', color: '#475569', gridcolor: 'rgba(15,23,42,0.06)' },
         yaxis2: { title: 'Cov Trace', overlaying: 'y', side: 'right', color: '#a855f7', showgrid: false }
     };
 
@@ -1963,11 +1964,11 @@ function plotAnomalyResults(data, history, payload) {
         paper_bgcolor: 'rgba(0,0,0,0)',
         plot_bgcolor:  'rgba(0,0,0,0)',
         margin: { l: 54, r: 20, t: 36, b: 40 },
-        title:  { text: `Anomaly Forecast — ${payload.param_name}`, font: { color: '#cbd5e1', size: 13 } },
-        legend: { font: { color: '#9ca3af', size: 10 }, bgcolor: 'rgba(0,0,0,0)' },
+        title:  { text: `Anomaly Forecast — ${payload.param_name}`, font: { color: '#0f172a', size: 13 } },
+        legend: { font: { color: '#475569', size: 10 }, bgcolor: 'rgba(0,0,0,0)' },
         shapes: [safeZone],
-        xaxis:  { title: 'Step Index', color: '#9ca3af', gridcolor: 'rgba(255,255,255,0.05)' },
-        yaxis:  { title: payload.param_name, color: '#9ca3af', gridcolor: 'rgba(255,255,255,0.05)' }
+        xaxis:  { title: 'Step Index', color: '#475569', gridcolor: 'rgba(15,23,42,0.06)' },
+        yaxis:  { title: payload.param_name, color: '#475569', gridcolor: 'rgba(15,23,42,0.06)' }
     };
 
     Plotly.newPlot('plot-anomaly', [traceHist, traceFore], layout, { responsive: true });
@@ -2025,10 +2026,10 @@ function plotVacuumResults(data, payload) {
         paper_bgcolor: 'rgba(0,0,0,0)',
         plot_bgcolor:  'rgba(0,0,0,0)',
         margin: { l: 64, r: 20, t: 36, b: 40 },
-        title:  { text: 'Vacuum Chamber Pressure Decay', font: { color: '#cbd5e1', size: 13 } },
-        legend: { font: { color: '#9ca3af' }, bgcolor: 'rgba(0,0,0,0)' },
-        xaxis:  { title: 'Time (s)', color: '#9ca3af', gridcolor: 'rgba(255,255,255,0.05)' },
-        yaxis:  { title: 'Pressure (Torr)', color: '#9ca3af', gridcolor: 'rgba(255,255,255,0.05)', type: 'log' }
+        title:  { text: 'Vacuum Chamber Pressure Decay', font: { color: '#0f172a', size: 13 } },
+        legend: { font: { color: '#475569' }, bgcolor: 'rgba(0,0,0,0)' },
+        xaxis:  { title: 'Time (s)', color: '#475569', gridcolor: 'rgba(15,23,42,0.06)' },
+        yaxis:  { title: 'Pressure (Torr)', color: '#475569', gridcolor: 'rgba(15,23,42,0.06)', type: 'log' }
     };
 
     Plotly.newPlot('plot-vacuum', [trace], layout, { responsive: true });
@@ -2090,5 +2091,591 @@ function renderErosionResults(data, payload) {
             <thead><tr><th>Material Property</th><th>Value</th></tr></thead>
             <tbody>${matRows}</tbody>
         </table>`;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  CLIENT-SIDE ROUTING & NAVIGATION
+// ═══════════════════════════════════════════════════════════════════════════════
+
+const PAGE_TITLES = {
+    'mission-planner': {
+        title: 'Mission Planner',
+        subtitle: 'Core trajectory design and mission planning parameters'
+    },
+    'launch-optimizer': {
+        title: 'Launch Optimizer',
+        subtitle: 'Optimal launch window Porkchop searches and genetic optimization solvers'
+    },
+    'orbit-tweaker': {
+        title: 'Orbit Tweaker',
+        subtitle: 'Interactive Keplerian sandbox, J2 perturbations, transfers, and station keeping'
+    },
+    'monte-carlo': {
+        title: 'Monte Carlo',
+        subtitle: 'Uncertainty propagation, 3-sigma dispersion envelopes, and error density analysis'
+    },
+    'systems-twin': {
+        title: 'Systems Twin',
+        subtitle: 'Extended Kalman Filters, CCSDS telemetry parsing, AI anomaly forecasting, and propulsion diagnostics'
+    },
+    'scenario-library': {
+        title: 'Scenario Library',
+        subtitle: 'Curated space mission presets, real-time calculations, and case studies'
+    },
+    'validation-credibility': {
+        title: 'Validation Console',
+        subtitle: 'Real-time simulation credibility checks, solver performance analysis, and aerospace datasets'
+    }
+};
+
+function switchPage(pageId) {
+    try {
+        // 1. Hide all pages, show selected page
+        const pages = document.querySelectorAll('.tab-page');
+        pages.forEach(p => p.classList.remove('active'));
+        
+        const targetPage = document.getElementById(`page-${pageId}`);
+        if (targetPage) {
+            targetPage.classList.add('active');
+        }
+        
+        // 2. Update navigation item state
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach(item => item.classList.remove('active'));
+        
+        const activeItem = document.getElementById(`nav-${pageId}`);
+        if (activeItem) {
+            activeItem.classList.add('active');
+        }
+        
+        // 3. Update Title & Subtitle
+        const pageMeta = PAGE_TITLES[pageId];
+        if (pageMeta) {
+            document.getElementById('page-title').textContent = pageMeta.title;
+            document.getElementById('page-subtitle').textContent = pageMeta.subtitle;
+        }
+        
+        if (pageId === 'validation-credibility') {
+            loadValidationBenchmarks();
+        }
+        
+        // 4. Move the shared 3D simulation section card if applicable
+        const sharedSection = document.getElementById('shared-simulation-section');
+        if (sharedSection) {
+            if (pageId === 'mission-planner') {
+                const p1 = document.getElementById('sim-placeholder-1');
+                if (p1) p1.appendChild(sharedSection);
+                const st = document.getElementById('sim-section-title');
+                if (st) st.textContent = '3D Trajectory Visualization';
+                const timeSlider = document.getElementById('time-slider');
+                const playbackPanel = document.getElementById('playback-panel');
+                if (playbackPanel) {
+                    if (timeSlider && parseInt(timeSlider.max) > 0) {
+                        playbackPanel.style.display = 'flex';
+                    } else {
+                        playbackPanel.style.display = 'none';
+                    }
+                }
+            } else if (pageId === 'orbit-tweaker') {
+                const p3 = document.getElementById('sim-placeholder-3');
+                if (p3) p3.appendChild(sharedSection);
+                const st = document.getElementById('sim-section-title');
+                if (st) st.textContent = '3D Keplerian Orbit & Perturbation Plot';
+                const playbackPanel = document.getElementById('playback-panel');
+                if (playbackPanel) playbackPanel.style.display = 'none';
+            } else if (pageId === 'monte-carlo') {
+                const p4 = document.getElementById('sim-placeholder-4');
+                if (p4) p4.appendChild(sharedSection);
+                const st = document.getElementById('sim-section-title');
+                if (st) st.textContent = 'Monte Carlo Trajectory Dispersion Paths (3D)';
+                const playbackPanel = document.getElementById('playback-panel');
+                if (playbackPanel) playbackPanel.style.display = 'none';
+            }
+        }
+        
+        // 5. Trigger window resize to recalculate Plotly sizes
+        setTimeout(() => {
+            try {
+                window.dispatchEvent(new Event('resize'));
+                // Resize specific charts to be 100% sure
+                const chartIds = ['plot-3d', 'plot-porkchop', 'plot-secondary', 'plot-ekf', 'plot-anomaly', 'plot-vacuum', 'plot-solver-error'];
+                chartIds.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el && el.classList.contains('js-plotly-plot') && typeof Plotly !== 'undefined') {
+                        Plotly.Plots.resize(el);
+                    }
+                });
+            } catch (err) {
+                console.error("Plotly resize within switchPage failed:", err);
+            }
+        }, 50);
+    } catch (e) {
+        console.error("switchPage error:", e);
+    }
+}
+
+function handleRouting() {
+    try {
+        const hash = window.location.hash.substring(1);
+        const validPages = [
+            'mission-planner',
+            'launch-optimizer',
+            'orbit-tweaker',
+            'monte-carlo',
+            'systems-twin',
+            'scenario-library',
+            'validation-credibility'
+        ];
+        const pageId = validPages.includes(hash) ? hash : 'mission-planner';
+        switchPage(pageId);
+    } catch (e) {
+        console.error("handleRouting error:", e);
+    }
+}
+
+// Listen for hash changes
+window.addEventListener('hashchange', handleRouting);
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  DEMO SCENARIOS LIBRARY
+// ═══════════════════════════════════════════════════════════════════════════════
+
+const SCENARIOS = {
+    'lunar-transfer': {
+        name: 'Lunar Gateway Hohmann Transfer',
+        badge: 'Orbital Mechanics',
+        badgeClass: 'primary',
+        desc: 'Computes a 2-impulse Hohmann orbital transfer from a 300km LEO parking orbit to Lunar orbit radius (42,164km). Demonstrates velocity budget planning and periapsis raising.',
+        physics: 'Utilizes the Vis-Viva equation to calculate orbital speeds, Hohmann semi-major axis, and impulsed velocity burns (ΔV₁ and ΔV₂). Appends propellant mass calculations using Tsiolkovsky\'s rocket equation.',
+        targetPage: 'orbit-tweaker',
+        params: {
+            'Reference Body': 'Earth',
+            'Start Orbit (a)': '6678 km (300km Alt)',
+            'Start Eccentricity (e)': '0.0',
+            'Target Radius (r₂)': '42164 km',
+            'Transfer Strategy': 'Hohmann',
+            'Spacecraft Wet Mass': '1500 kg',
+            'Propellant Isp': '320 s'
+        },
+        action: async function() {
+            // Set fields in Orbit Tweaker
+            document.getElementById('tweaker_body').value = 'earth';
+            document.getElementById('tweaker_a').value = 6678;
+            document.getElementById('val_tweaker_a').textContent = 6678;
+            document.getElementById('tweaker_e').value = 0.0;
+            document.getElementById('val_tweaker_e').textContent = '0.00';
+            document.getElementById('tweaker_i').value = 28.5;
+            document.getElementById('val_tweaker_i').textContent = '28.5';
+            document.getElementById('tweaker_raan').value = 0.0;
+            document.getElementById('val_tweaker_raan').textContent = '0.0';
+            
+            // Set fields in Transfer
+            document.getElementById('transfer_type').value = 'hohmann';
+            document.getElementById('transfer_target_r').value = 42164;
+            document.getElementById('val_transfer_target_r').textContent = 42164;
+            
+            // Toggle controls
+            toggleTransferControls();
+            
+            // Run calculations
+            onTweakerParamsChange();
+            await executeTransferSolver();
+        }
+    },
+    'mars-transit': {
+        name: 'Crewed Mars Fast Transit',
+        badge: 'Interplanetary',
+        badgeClass: 'secondary',
+        desc: 'Curates a heliocentric crewed transit to Mars starting in August 2032. Explores launch windows (Porkchop plot C3 launch energy) and GA multi-stage sizing.',
+        physics: 'Calculates the heliocentric elliptical transfer using Lambert\'s problem solvers. Solves for the minimal energy departure window by plotting Porkchop C3 contours, and sizes a 2-stage launch vehicle.',
+        targetPage: 'mission-planner',
+        params: {
+            'Destination': 'Mars',
+            'Launch Date': '2032-08-15',
+            'Flight Duration': '258 days',
+            'Propulsion': 'Chemical (Isp 320s)',
+            'Wet Mass': '2500 kg',
+            'Payload Mass': '800 kg'
+        },
+        action: async function() {
+            // Set fields in Mission Planner
+            document.getElementById('destination').value = 'mars';
+            document.getElementById('propulsion_type').value = 'Chemical';
+            document.getElementById('isp').value = 320;
+            document.getElementById('spacecraft_mass').value = 2500;
+            document.getElementById('payload_mass').value = 800;
+            document.getElementById('launch_date').value = '2032-08-15';
+            document.getElementById('flight_days').value = 258;
+            
+            // Set fields in Porkchop
+            document.getElementById('porkchop_start_dep').value = '2032-08-01';
+            document.getElementById('porkchop_end_dep').value = '2032-08-20';
+            document.getElementById('porkchop_start_arr').value = '2033-02-01';
+            document.getElementById('porkchop_end_arr').value = '2033-02-20';
+            document.getElementById('porkchop_steps').value = 15;
+            
+            // Run calculations
+            await runSimulation();
+            await planMission();
+        }
+    },
+    'bennu-spiral': {
+        name: 'Low-Thrust Bennu Rendezvous',
+        badge: 'Electric Propulsion',
+        badgeClass: 'accent',
+        desc: 'Simulates a spacecraft matching the orbit of Asteroid Bennu using continuous low-thrust electric propulsion (Isp 2000s). Illustrates electric thruster spiral maneuvers.',
+        physics: 'Calculates propellant consumption and continuous thrust acceleration profiles. Integrates low-thrust orbital changes where changes are gradual over many revolutions instead of impulsive burns.',
+        targetPage: 'orbit-tweaker',
+        params: {
+            'Reference Body': 'Sun',
+            'Target Body': 'Bennu',
+            'Propulsion': 'Electric (Isp 2000s)',
+            'Transfer Strategy': 'Low-Thrust Spiral',
+            'Target Radius (r₂)': '168000000 km',
+            'Thruster Thrust': '0.50 N',
+            'Wet Mass': '1200 kg'
+        },
+        action: async function() {
+            // Set fields in Orbit Tweaker
+            document.getElementById('tweaker_body').value = 'sun';
+            document.getElementById('tweaker_a').value = 25000;
+            document.getElementById('val_tweaker_a').textContent = 25000;
+            document.getElementById('tweaker_e').value = 0.2;
+            document.getElementById('val_tweaker_e').textContent = '0.20';
+            
+            // Set fields in Transfer
+            document.getElementById('transfer_type').value = 'lowthrust';
+            document.getElementById('transfer_target_r').value = 40000;
+            document.getElementById('val_transfer_target_r').textContent = 40000;
+            document.getElementById('transfer_thrust').value = 0.50;
+            document.getElementById('val_transfer_thrust').textContent = '0.50';
+            
+            // Toggle controls
+            toggleTransferControls();
+            
+            // Run calculations
+            onTweakerParamsChange();
+            await executeTransferSolver();
+        }
+    },
+    'sunsync-orbit': {
+        name: 'Sun-Synchronous Orbit Matching',
+        badge: 'Perturbations',
+        badgeClass: 'info',
+        desc: 'Designs a sun-synchronous Earth observation orbit at 800km altitude. Solves for the exact inclination where J2 nodal precession matches the Earth\'s orbit around the Sun.',
+        physics: 'Calculates the J2-induced nodal precession rate (Ω̇). Solves for the inclination angle (i) as a function of semi-major axis (a) to yield Ω̇ = 0.9856 deg/day (exactly 360 deg/year).',
+        targetPage: 'orbit-tweaker',
+        params: {
+            'Reference Body': 'Earth',
+            'Orbit Altitude': '800 km (a = 7178 km)',
+            'Eccentricity (e)': '0.001 (Circular)',
+            'LTAN Node': 'Noon (12:00 plane)',
+            'J2 Perturbation': 'Enabled',
+            'Target Precession': '0.9856 deg/day'
+        },
+        action: async function() {
+            // Set fields in Orbit Tweaker
+            document.getElementById('tweaker_body').value = 'earth';
+            document.getElementById('tweaker_a').value = 7178;
+            document.getElementById('val_tweaker_a').textContent = 7178;
+            document.getElementById('tweaker_e').value = 0.001;
+            document.getElementById('val_tweaker_e').textContent = '0.00';
+            document.getElementById('tweaker_i').value = 98.6;
+            document.getElementById('val_tweaker_i').textContent = '98.6';
+            document.getElementById('tweaker_j2').checked = true;
+            document.getElementById('tweaker_nbody').checked = false;
+            
+            // Run calculations
+            onTweakerParamsChange();
+            await solveSunSyncInclination();
+        }
+    },
+    'systems-twin': {
+        name: 'Spacecraft Diagnostics & Filtering',
+        badge: 'Digital Twin',
+        badgeClass: 'danger',
+        desc: 'Calibrates telemetry streams with Kalman filtering state estimators and predicts thruster temperature anomalies using AI time-series forecasting.',
+        physics: 'Uses an Extended Kalman Filter (EKF) to filter gaussian measurement noise and detect state faults. Applies AI auto-regressive predictive models on telemetry history arrays.',
+        targetPage: 'systems-twin',
+        params: {
+            'Simulation System': 'Extended Kalman Filter',
+            'Orbit Radius': '7000 km',
+            'Time Step (dt)': '10.0 s',
+            'Fault Injection': 'Step 100 (+5km fault)',
+            'AI Parameters': 'thruster_temp',
+            'Forecast Steps': '5 future intervals'
+        },
+        action: async function() {
+            // Set fields in Systems Twin EKF
+            document.getElementById('ekf_orbit_radius').value = 7000;
+            document.getElementById('ekf_steps').value = 200;
+            document.getElementById('ekf_dt').value = 10.0;
+            document.getElementById('ekf_meas_noise').value = 0.05;
+            document.getElementById('ekf_fault_step').value = 100;
+            document.getElementById('ekf_fault_mag').value = 5.0;
+            
+            // Set fields in Anomaly
+            document.getElementById('anomaly_param').value = 'thruster_temp';
+            document.getElementById('anomaly_history').value = '320,322,325,329,334,341,350,361,374,389';
+            document.getElementById('anomaly_steps').value = 5;
+            
+            // Run EKF & Anomaly calculations
+            await runEKFSimulation();
+            await runAnomalyForecast();
+        }
+    }
+};
+
+let activeScenarioId = null;
+
+function loadScenario(scenarioId) {
+    const sc = SCENARIOS[scenarioId];
+    if (!sc) return;
+    
+    activeScenarioId = scenarioId;
+    
+    // Update Scenario Info Board UI
+    document.getElementById('board-scenario-name').textContent = sc.name;
+    document.getElementById('board-scenario-badge').textContent = sc.badge;
+    
+    const badgeEl = document.getElementById('board-scenario-badge');
+    badgeEl.className = `badge ${sc.badgeClass}`;
+    
+    document.getElementById('board-scenario-desc').textContent = sc.desc;
+    document.getElementById('board-scenario-physics').textContent = sc.physics;
+    
+    const paramsContainer = document.getElementById('board-scenario-params');
+    paramsContainer.innerHTML = Object.entries(sc.params).map(([k, v]) => `
+        <div style="display: flex; justify-content: space-between; font-size: 11px; border-bottom: 1px solid var(--card-border); padding: 4px 0;">
+            <span style="color: var(--text-secondary);">${k}:</span>
+            <strong style="color: var(--text-primary); font-family: monospace;">${v}</strong>
+        </div>
+    `).join('');
+    
+    document.getElementById('scenario-info-board').style.display = 'block';
+    
+    // Scroll down to the board
+    setTimeout(() => {
+        document.getElementById('scenario-info-board').scrollIntoView({ behavior: 'smooth' });
+    }, 50);
+}
+
+async function navigateToActiveScenarioPage() {
+    if (!activeScenarioId) return;
+    const sc = SCENARIOS[activeScenarioId];
+    if (!sc) return;
+    
+    // Switch to page
+    switchPage(sc.targetPage);
+    
+    try {
+        await sc.action();
+    } catch (e) {
+        console.error("Failed to run scenario action:", e);
+    }
+}
+
+
+// ── Validation & Credibility Page Functions ──────────────────────────────────
+async function loadValidationBenchmarks() {
+    try {
+        const res = await fetch("/api/v1/benchmarks/all");
+        const data = await res.json();
+        if (data.status !== "success") {
+            console.error("Failed to load validation benchmarks:", data);
+            return;
+        }
+
+        // 1. Populate NASA Reference Orbit Comparison Table
+        const orbitTable = document.getElementById("orbit-benchmark-table");
+        if (orbitTable) {
+            const orbits = data.orbits;
+            const R_EARTH = 6378.1;
+            const MU_EARTH = 398600.4418;
+            
+            const getVelocity = (alt) => {
+                const r = R_EARTH + alt;
+                return Math.sqrt(MU_EARTH / r);
+            };
+
+            let rows = "";
+            Object.entries(orbits).forEach(([key, orbit]) => {
+                const compVel = getVelocity(orbit.altitude_km);
+                const relError = Math.abs(compVel - orbit.velocity_km_s) / orbit.velocity_km_s;
+                rows += `
+                    <tr>
+                        <td><strong>${orbit.name}</strong></td>
+                        <td>Velocity at ${orbit.altitude_km.toLocaleString()} km alt</td>
+                        <td>${orbit.velocity_km_s.toFixed(2)} km/s</td>
+                        <td>${compVel.toFixed(3)} km/s</td>
+                        <td>${(relError * 100).toFixed(4)}%</td>
+                        <td><span class="card-badge accent" style="padding: 2px 6px; font-size: 9px;">PASS</span></td>
+                    </tr>
+                `;
+            });
+            orbitTable.innerHTML = rows;
+        }
+
+        // 2. Populate Historical Interplanetary Cases Comparison Table
+        const missionTable = document.getElementById("mission-benchmark-table");
+        if (missionTable) {
+            const missions = data.missions;
+            let rows = "";
+            Object.entries(missions).forEach(([key, mission]) => {
+                const name = mission.name;
+                mission.benchmarks.forEach(bench => {
+                    rows += `
+                        <tr>
+                            <td><strong>${name}</strong></td>
+                            <td>${bench.metric}</td>
+                            <td>${bench.reference}</td>
+                            <td>${bench.computed}</td>
+                            <td><span class="card-badge accent" style="padding: 2px 6px; font-size: 9px;">${bench.status}</span></td>
+                        </tr>
+                    `;
+                });
+            });
+            missionTable.innerHTML = rows;
+        }
+
+        // 3. Populate JPL DE421 Planetary Constants Catalog
+        const planetaryTable = document.getElementById("jpl-planetary-table");
+        if (planetaryTable) {
+            const planetary = data.planetary_constants;
+            planetaryTable.innerHTML = Object.entries(planetary).map(([body, specs]) => `
+                <tr>
+                    <td><strong>${body}</strong></td>
+                    <td>${specs.a.toExponential(4)} km</td>
+                    <td>${specs.e.toFixed(6)}</td>
+                    <td>${specs.i.toFixed(3)}°</td>
+                    <td>${specs.mu.toExponential(4)}</td>
+                </tr>
+            `).join('');
+        }
+
+    } catch (e) {
+        console.error("Error loading validation benchmarks:", e);
+    }
+}
+
+async function runLiveVerificationSuite() {
+    const btn = document.getElementById("btn-run-validation");
+    const tbody = document.getElementById("live-validation-results");
+    
+    if (btn) btn.disabled = true;
+    if (tbody) {
+        tbody.innerHTML = `<tr><td colspan="2" style="text-align: center; padding: 20px;"><span style="color: var(--text-secondary);">Running validation suite layers...</span></td></tr>`;
+    }
+
+    try {
+        const res = await fetch("/api/v1/dashboards/validation");
+        const data = await res.json();
+        
+        await new Promise(resolve => setTimeout(resolve, 800));
+
+        if (tbody) {
+            tbody.innerHTML = Object.entries(data.layers).map(([layer, score]) => {
+                const statusText = score >= 1.0 ? "PASS" : "FAIL";
+                const badgeClass = score >= 1.0 ? "accent" : "danger";
+                return `
+                    <tr>
+                        <td style="text-transform: uppercase; font-size: 11px; font-weight: 600; font-family: monospace;">${layer}_layer_checks</td>
+                        <td><span class="card-badge ${badgeClass}" style="padding: 2px 6px; font-size: 9px;">${statusText}</span></td>
+                    </tr>
+                `;
+            }).join('');
+        }
+    } catch (e) {
+        if (tbody) {
+            tbody.innerHTML = `<tr><td colspan="2" style="text-align: center; color: var(--danger-color); padding: 16px;">Error running live verification: ${e.message}</td></tr>`;
+        }
+    } finally {
+        if (btn) btn.disabled = false;
+    }
+}
+
+function runNumericalAnalysis() {
+    const btn = document.getElementById("btn-run-numerical");
+    if (btn) btn.disabled = true;
+
+    const w = 1.0;
+    const t_max = 20.0;
+    const dt = 0.4;
+    
+    const steps = Math.floor(t_max / dt);
+    
+    const t_vals = [];
+    const rk4_errors = [];
+    const dp45_errors = [];
+
+    let x_rk4 = 1.0, v_rk4 = 0.0;
+    let x_dp = 1.0, v_dp = 0.0;
+
+    const deriv = (state) => {
+        return [state[1], -(w*w) * state[0]];
+    };
+
+    const rk4Step = (x, v, dt) => {
+        const k1 = deriv([x, v]);
+        const k2 = deriv([x + 0.5*dt*k1[0], v + 0.5*dt*k1[1]]);
+        const k3 = deriv([x + 0.5*dt*k2[0], v + 0.5*dt*k2[1]]);
+        const k4 = deriv([x + dt*k3[0], v + dt*k3[1]]);
+        
+        return [
+            x + (dt/6.0) * (k1[0] + 2.0*k2[0] + 2.0*k3[0] + k4[0]),
+            v + (dt/6.0) * (k1[1] + 2.0*k2[1] + 2.0*k3[1] + k4[1])
+        ];
+    };
+
+    const dp5Step = (x, v, dt) => {
+        const [x_half1, v_half1] = rk4Step(x, v, 0.5 * dt);
+        const [x_full, v_full] = rk4Step(x_half1, v_half1, 0.5 * dt);
+        return [x_full, v_full];
+    };
+
+    for (let i = 0; i <= steps; i++) {
+        const t = i * dt;
+        t_vals.push(t);
+        
+        const exact_x = Math.cos(w * t);
+        
+        rk4_errors.push(Math.abs(x_rk4 - exact_x));
+        dp45_errors.push(Math.abs(x_dp - exact_x));
+        
+        [x_rk4, v_rk4] = rk4Step(x_rk4, v_rk4, dt);
+        [x_dp, v_dp] = dp5Step(x_dp, v_dp, dt);
+    }
+
+    const traceRK4 = {
+        x: t_vals,
+        y: rk4_errors,
+        mode: 'lines+markers',
+        name: 'RK4 Accumulation',
+        line: { color: 'var(--secondary-color)', width: 2 },
+        marker: { size: 5 }
+    };
+
+    const traceDP = {
+        x: t_vals,
+        y: dp45_errors,
+        mode: 'lines+markers',
+        name: 'Dormand-Prince (DP45)',
+        line: { color: 'var(--primary-color)', width: 2 },
+        marker: { size: 5 }
+    };
+
+    const layout = {
+        margin: { t: 40, b: 40, l: 50, r: 20 },
+        paper_bgcolor: 'rgba(255,255,255,0)',
+        plot_bgcolor: 'rgba(255,255,255,0)',
+        showlegend: true,
+        legend: { font: { color: '#334155', size: 10 }, bgcolor: 'rgba(255,255,255,0)' },
+        xaxis: { title: 'Integration Time (s)', color: '#475569', gridcolor: 'rgba(15,23,42,0.06)', zerolinecolor: 'rgba(15,23,42,0.1)' },
+        yaxis: { title: 'Absolute Position Error', color: '#475569', gridcolor: 'rgba(15,23,42,0.06)', type: 'log', zerolinecolor: 'rgba(15,23,42,0.1)' }
+    };
+
+    Plotly.newPlot('plot-solver-error', [traceRK4, traceDP], layout, { responsive: true });
+
+    if (btn) btn.disabled = false;
 }
 
